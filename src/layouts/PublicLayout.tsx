@@ -7,6 +7,7 @@ import { Button } from "../components/common/Button";
 import { Drawer } from "../components/common/Drawer";
 import { AnimatePresence, m } from "framer-motion";
 import { fadeIn, staggerContainer, staggerItem, fadeUp } from "../animations/variants";
+import { ThemeToggle } from "../components/common/ThemeToggle";
 
 export const PublicLayout: React.FC = () => {
   const { isAuthenticated, user, logout } = useAuthStore();
@@ -80,6 +81,7 @@ export const PublicLayout: React.FC = () => {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-3">
+            <ThemeToggle />
             {isAuthenticated ? (
               <>
                 <Button

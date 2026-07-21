@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -45,11 +46,19 @@ export default {
           800: '#6b21a8',
           900: '#581c87',
           950: '#3b0764',
+        },
+        slate: {
+          850: '#151e2e',
+          925: '#0b0f19',
         }
       },
       fontFamily: {
         sans: ['Inter', 'Plus Jakarta Sans', 'system-ui', 'sans-serif'],
       },
+      boxShadow: {
+        'glow-primary': '0 0 20px -5px rgba(99, 102, 241, 0.4)',
+        'glow-brand': '0 0 20px -5px rgba(139, 92, 246, 0.4)',
+      }
     },
   },
   plugins: [],

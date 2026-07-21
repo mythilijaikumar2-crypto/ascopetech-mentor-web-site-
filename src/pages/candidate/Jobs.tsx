@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useJobStore } from "../../store/jobStore";
 import { useResumeStore } from "../../store/resumeStore";
 import { useProfileStore } from "../../store/profileStore";
+import { useToastStore } from "../../store/toastStore";
 import { mockJobs } from "../../data/jobs";
 import { mockCareers } from "../../data/careers";
 import { Card } from "../../components/common/Card";
@@ -12,18 +13,17 @@ import { Input } from "../../components/common/Input";
 import { Select } from "../../components/common/Select";
 import { Modal } from "../../components/common/Modal";
 import { Search, MapPin, Briefcase, Bookmark, BookmarkCheck, Sparkles } from "lucide-react";
-import { toast } from "sonner";
 
 export const Jobs: React.FC = () => {
   const { savedJobIds, saveJob, unsaveJob, applyToJob, applications } = useJobStore();
   const { resumes } = useResumeStore();
   const { selectedGoal } = useProfileStore();
+  const { addToast } = useToastStore();
   
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("All");
   const [selectedType, setSelectedType] = useState("All");
   
-  // Application Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeJobId, setActiveJobId] = useState<string | null>(null);
   const [resumeId, setResumeId] = useState("");
@@ -37,17 +37,17 @@ export const Jobs: React.FC = () => {
     const isSaved = savedJobIds.includes(id);
     if (isSaved) {
       unsaveJob(id);
-      toast.success("Job listing removed from saved bookmarks.");
+      addToast({ type: "info", title: "Bookmark Removed", message: "Job listing removed from saved bookmarks." });
     } else {
       saveJob(id);
-      toast.success("Job listing bookmarked!");
+      addToast({ type: "success", title: "Job Bookmarked", message: "Job saved to your candidate dashboard." });
     }
   };
 
   const handleApplyClick = (e: React.MouseEvent, jobId: string) => {
     e.stopPropagation();
     if (resumes.length === 0) {
-      toast.warning("You must build or upload a resume in the Resume Builder before applying.");
+      addToast({ type: "warning", title: "Resume Required", message: "Please build or upload a resume in Resume Builder before applying." });
       navigate("/candidate/resumes");
       return;
     }
@@ -67,7 +67,7 @@ export const Jobs: React.FC = () => {
       const selectedCv = resumes.find((r) => r.id === resumeId);
       if (targetJob && selectedCv) {
         applyToJob({
-          id: `app-${Math.random().toString(36).substr(2, 9)}`,
+          id: `app-${Date.now()}`,
           jobId: targetJob.id,
           jobTitle: targetJob.title,
           company: targetJob.company,
@@ -77,15 +77,13 @@ export const Jobs: React.FC = () => {
           status: "Applied",
           appliedDate: new Date().toLocaleDateString()
         });
-        
-        toast.success(`Application submitted to ${targetJob.company}!`);
+        addToast({ type: "success", title: "Application Submitted", message: `Application sent to ${targetJob.company}!` });
       }
       setIsApplying(false);
       setIsModalOpen(false);
-    }, 1200);
+    }, 800);
   };
 
-  // Find candidate's target career category
   const targetCareer = mockCareers.find((c) => c.id === selectedGoal);
   
   const filteredJobs = mockJobs.filter((job) => {
@@ -97,28 +95,27 @@ export const Jobs: React.FC = () => {
   });
 
   return (
-    <div className="py-8 flex flex-col gap-8">
-      
+    <div className="py-6 flex flex-col gap-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
         <div>
-          <Badge variant="primary">RECOMMENDED JOBS</Badge>
-          <h1 className="text-xl md:text-2xl font-bold text-slate-900 tracking-tight mt-1.5">
-            Jobs Matching Your Profile
+          <Badge variant="primary" className="text-[10px]">MATCHED JOB BOARD</Badge>
+          <h1 className="text-xl md:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight mt-1">
+            Targeted Job Opportunities
           </h1>
-          <p className="text-xs text-slate-505 leading-relaxed mt-0.5">
-            Explore listings matching your {targetCareer ? `'${targetCareer.title}'` : ""} profile readiness score.
+          <p className="text-xs md:text-sm text-slate-500 dark:text-slate-400 leading-relaxed mt-0.5">
+            Listings filtered for your {targetCareer ? `'${targetCareer.title}'` : "tech candidate"} readiness profile score.
           </p>
         </div>
       </div>
 
       {/* Filter toolbar */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 bg-white p-5 rounded-2xl border border-slate-100 shadow-sm items-end">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-xs items-end">
         <div className="md:col-span-6 relative w-full">
           <Input
             type="text"
             label="Keywords"
-            placeholder="Search roles, skills..."
+            placeholder="Search roles, companies, tech stacks..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10"
@@ -156,11 +153,11 @@ export const Jobs: React.FC = () => {
 
       {/* Jobs Grid */}
       {filteredJobs.length === 0 ? (
-        <Card className="py-16 text-center border-slate-200/80 bg-white shadow-sm p-8 max-w-lg mx-auto flex flex-col items-center gap-4">
-          <Briefcase className="h-10 w-10 text-slate-300" />
+        <Card className="py-16 text-center border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xs p-8 max-w-lg mx-auto flex flex-col items-center gap-4">
+          <Briefcase className="h-10 w-10 text-slate-300 dark:text-slate-600" />
           <div>
-            <h3 className="text-sm font-bold text-slate-800">No matching jobs found</h3>
-            <p className="text-xs text-slate-450 mt-1">Try adjusting your filters or search keywords.</p>
+            <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200">No matching jobs found</h3>
+            <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">Try adjusting your filters or search keywords.</p>
           </div>
         </Card>
       ) : (
@@ -172,24 +169,24 @@ export const Jobs: React.FC = () => {
               <Card
                 key={job.id}
                 variant="interactive"
-                className="p-6 cursor-pointer flex flex-col justify-between min-h-[220px]"
+                className="p-6 cursor-pointer flex flex-col justify-between min-h-[220px] dark:border-slate-800 dark:bg-slate-900"
                 onClick={() => navigate(`/jobs/${job.id}`)}
               >
                 <div className="flex flex-col gap-4">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-3">
-                      <div className={`h-11 w-11 rounded-xl flex items-center justify-center font-bold text-xs ${job.logo}`}>
+                      <div className={`h-11 w-11 rounded-2xl flex items-center justify-center font-bold text-xs ${job.logo}`}>
                         {job.company.substring(0, 2).toUpperCase()}
                       </div>
                       <div>
-                        <h3 className="text-sm font-bold text-slate-800 tracking-tight leading-tight">{job.title}</h3>
-                        <p className="text-[11px] text-slate-450 font-semibold mt-0.5">{job.company}</p>
+                        <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 tracking-tight leading-tight">{job.title}</h3>
+                        <p className="text-[11px] text-slate-400 dark:text-slate-500 font-semibold mt-0.5">{job.company}</p>
                       </div>
                     </div>
                     <button
                       onClick={(e) => handleSaveToggle(e, job.id)}
-                      className={`p-2 rounded-lg transition-colors ${
-                        isSaved ? "bg-primary-50 text-primary-600" : "bg-slate-50 text-slate-400 hover:bg-slate-100 hover:text-slate-700"
+                      className={`p-2 rounded-xl transition-colors ${
+                        isSaved ? "bg-primary-50 dark:bg-primary-950/60 text-primary-600 dark:text-primary-400" : "bg-slate-50 dark:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
                       }`}
                     >
                       {isSaved ? <BookmarkCheck className="h-4.5 w-4.5" /> : <Bookmark className="h-4.5 w-4.5" />}
@@ -206,13 +203,13 @@ export const Jobs: React.FC = () => {
                     </Badge>
                   </div>
 
-                  <p className="text-xs text-slate-500 line-clamp-3 leading-relaxed mt-1">
+                  <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-3 leading-relaxed mt-1">
                     {job.description}
                   </p>
                 </div>
 
-                <div className="flex items-center justify-between border-t border-slate-100 pt-4 mt-6">
-                  <span className="text-[10px] text-slate-400 font-semibold">{job.datePosted}</span>
+                <div className="flex items-center justify-between border-t border-slate-100 dark:border-slate-800 pt-4 mt-6">
+                  <span className="text-[10px] text-slate-400 dark:text-slate-500 font-semibold">{job.datePosted}</span>
                   <div className="flex gap-2">
                     <Button
                       variant={isApplied ? "ghost" : "primary"}
@@ -241,15 +238,15 @@ export const Jobs: React.FC = () => {
             required
           />
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold text-slate-700">Cover Note (Optional)</label>
+            <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Cover Note (Optional)</label>
             <textarea
               value={coverNote}
               onChange={(e) => setCoverNote(e.target.value)}
               placeholder="Introduce yourself to the recruiter..."
-              className="w-full h-28 p-3 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-primary-500"
+              className="w-full h-28 p-3 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 rounded-xl text-xs focus:outline-none focus:border-primary-500 transition-colors"
             />
           </div>
-          <div className="flex justify-end gap-3 mt-4 border-t border-slate-50 pt-4">
+          <div className="flex justify-end gap-3 mt-4 border-t border-slate-100 dark:border-slate-800 pt-4">
             <Button variant="ghost" onClick={() => setIsModalOpen(false)}>
               Cancel
             </Button>
@@ -262,4 +259,5 @@ export const Jobs: React.FC = () => {
     </div>
   );
 };
+
 export default Jobs;

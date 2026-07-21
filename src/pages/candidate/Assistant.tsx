@@ -2,58 +2,60 @@ import React, { useState, useEffect, useRef } from "react";
 import { Card } from "../../components/common/Card";
 import { Badge } from "../../components/common/Badge";
 import { Button } from "../../components/common/Button";
-import { Send, Bot, User, Trash2, Sparkles, HelpCircle } from "lucide-react";
-import { toast } from "sonner";
+import { AiThinkingAnimation } from "../../components/animations/AiThinkingAnimation";
+import { StreamingText } from "../../components/animations/StreamingText";
+import { AiService } from "../../services/api/aiService";
+import { Send, Bot, User, Trash2, Sparkles, Copy, Check, Paperclip, Mic, StopCircle } from "lucide-react";
 
 interface ChatMessage {
   id: string;
   sender: "user" | "bot";
   text: string;
   timestamp: string;
+  isStreaming?: boolean;
 }
 
 export const Assistant: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
+  const abortRef = useRef<boolean>(false);
 
   // Suggested Prompts
   const suggestions = [
-    { label: "Skills match?", query: "Which career suits my current skills?" },
-    { label: "Frontend guide?", query: "What should I learn to become a frontend developer?" },
-    { label: "Optimize resume?", query: "How can I improve my resume ATS score?" },
-    { label: "Interview prep?", query: "How should I prepare for a technical interview?" }
+    { label: "Frontend Skills", query: "What technical skills are mandatory for a Mid-Level Frontend Engineer?" },
+    { label: "ATS Resume Tips", query: "How do I optimize my resume layout to pass ATS scanning algorithms?" },
+    { label: "STAR Interview Guide", query: "Give me an example of answering behavioral questions using the STAR technique." },
+    { label: "Study Roadmap", query: "Generate a 4-week study plan for mastering React 18 & TypeScript." }
   ];
 
-  // Load chat log from localStorage on mount
   useEffect(() => {
     const saved = localStorage.getItem("career_ai_assistant_chat");
     if (saved) {
       setMessages(JSON.parse(saved));
     } else {
-      // Default greeting
       setMessages([
         {
           id: "welcome",
           sender: "bot",
-          text: "Hello! I am your AI Career Mentor. I can guide you in discovering matches, building ATS-compliant resumes, preparing for STAR interviews, or generating learning schedules. How can I help you today?",
+          text: "Hello! I am your AI Career Mentor. I can guide you in discovering career matches, optimizing ATS resumes, preparing for STAR technical interviews, or generating custom learning roadmaps. What would you like to focus on today?",
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }
       ]);
     }
   }, []);
 
-  // Auto scroll to bottom
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isTyping]);
+  }, [messages, isGenerating]);
 
-  const handleSendMessage = (text: string) => {
-    if (!text.trim()) return;
+  const handleSendMessage = async (text: string) => {
+    if (!text.trim() || isGenerating) return;
 
     const userMsg: ChatMessage = {
-      id: `msg-${Math.random().toString(36).substr(2, 9)}`,
+      id: `msg-${Date.now()}-user`,
       sender: "user",
       text,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
@@ -61,137 +63,160 @@ export const Assistant: React.FC = () => {
 
     const updated = [...messages, userMsg];
     setMessages(updated);
-    localStorage.setItem("career_ai_assistant_chat", JSON.stringify(updated));
     setInput("");
-    setIsTyping(true);
+    setIsGenerating(true);
+    abortRef.current = false;
 
-    // Simulate AI response evaluation delay
-    setTimeout(() => {
-      const responseText = getMockResponse(text);
-      const botMsg: ChatMessage = {
-        id: `msg-${Math.random().toString(36).substr(2, 9)}`,
-        sender: "bot",
-        text: responseText,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      };
+    // Add empty streaming bot message
+    const botId = `msg-${Date.now()}-bot`;
+    const botMsg: ChatMessage = {
+      id: botId,
+      sender: "bot",
+      text: "",
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      isStreaming: true
+    };
 
-      const finalMessages = [...updated, botMsg];
-      setMessages(finalMessages);
-      localStorage.setItem("career_ai_assistant_chat", JSON.stringify(finalMessages));
-      setIsTyping(false);
-    }, 1200);
+    setMessages((prev) => [...prev, botMsg]);
+
+    try {
+      await AiService.streamChatResponse(text, (token) => {
+        if (abortRef.current) return;
+        setMessages((prev) =>
+          prev.map((m) => (m.id === botId ? { ...m, text: m.text + token } : m))
+        );
+      });
+    } catch {
+      // Fallback
+    } finally {
+      setIsGenerating(false);
+      setMessages((prev) => {
+        const finalMsgs = prev.map((m) => (m.id === botId ? { ...m, isStreaming: false } : m));
+        localStorage.setItem("career_ai_assistant_chat", JSON.stringify(finalMsgs));
+        return finalMsgs;
+      });
+    }
   };
 
-  const getMockResponse = (query: string): string => {
-    const q = query.toLowerCase();
-    
-    if (q.includes("resume") || q.includes("cv") || q.includes("ats")) {
-      return "To optimize your resume ATS score, visit our Resume Analyzer. Copy your CV text, paste the target job description, and our engine will calculate matching skills. Integrate missing keywords directly in your experience descriptions to improve scores.";
-    }
-    if (q.includes("interview") || q.includes("mock") || q.includes("prepare")) {
-      return "Preparation is key! Go to the Mock Interviews page, select your difficulty level, and start a timed console session. Practice explaining database indexes or LCP optimizations. Graded scorecards highlight areas to improve.";
-    }
-    if (q.includes("roadmap") || q.includes("learn") || q.includes("study") || q.includes("modules")) {
-      return "A structured study schedule is crucial for career transitions. Once you set a goal in 'Career Matches', go to 'Learning Roadmap' to view beginner, intermediate, and advanced modules. Check off milestones daily.";
-    }
-    if (q.includes("react") || q.includes("frontend") || q.includes("typescript")) {
-      return "Frontend Development matches candidates with strong layout styling preferences and interactive coding interests. Master HTML/CSS Flexbox, JavaScript event loop mechanisms, React state hooks, and TypeScript types.";
-    }
-    if (q.includes("skills") || q.includes("career")) {
-      return "Complete our 5-minute Career Quiz in the sidebar. The calculation matches your work preferences and skills sliders against top roles (Software Developer, UI Designer, Product Manager) to display affinity percentages.";
-    }
+  const handleStopGeneration = () => {
+    abortRef.current = true;
+    setIsGenerating(false);
+  };
 
-    return "That's a great question! You can use our sidebar modules to discover career matches, audit resume keywords against job specifications, practice graded mock interviews, or study curriculum schedules.";
+  const handleCopyText = (id: string, text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2000);
   };
 
   const handleClearHistory = () => {
-    if (confirm("Are you sure you want to delete your conversation history?")) {
+    if (window.confirm("Delete conversation history?")) {
       const reset: ChatMessage[] = [
         {
           id: "welcome",
           sender: "bot",
-          text: "Hello! I am your AI Career Mentor. I can guide you in discovering matches, building ATS-compliant resumes, preparing for STAR interviews, or generating learning schedules. How can I help you today?",
+          text: "Hello! I am your AI Career Mentor. I can guide you in discovering career matches, optimizing ATS resumes, preparing for STAR technical interviews, or generating custom learning roadmaps. What would you like to focus on today?",
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }
       ];
       setMessages(reset);
       localStorage.setItem("career_ai_assistant_chat", JSON.stringify(reset));
-      toast.success("Conversation history deleted.");
     }
   };
 
   return (
-    <div className="py-8 flex flex-col gap-6 h-[calc(100vh-120px)] overflow-hidden">
+    <div className="py-6 flex flex-col gap-6 h-[calc(100vh-100px)] overflow-hidden">
       {/* Header toolbar */}
-      <div className="flex items-center justify-between border-b border-slate-200 pb-5 shrink-0">
-        <div className="flex items-center gap-2.5">
-          <Badge variant="primary">AI MENTOR</Badge>
-          <h1 className="text-xl font-bold text-slate-900 tracking-tight">AI Career Assistant</h1>
+      <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4 shrink-0">
+        <div className="flex items-center gap-3">
+          <Badge variant="primary" className="text-[10px]">AI ENGINE ACTIVE</Badge>
+          <div>
+            <h1 className="text-lg md:text-xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+              AI Career Mentor Chat
+            </h1>
+            <p className="text-[11px] text-slate-500 dark:text-slate-400">24/7 intelligent advice for interview prep, resume optimization, and learning paths.</p>
+          </div>
         </div>
         <Button
           variant="outline"
           size="sm"
-          className="text-red-500 hover:bg-red-50"
-          leftIcon={<Trash2 className="h-4.5 w-4.5" />}
+          className="text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 text-xs"
+          leftIcon={<Trash2 className="h-4 w-4" />}
           onClick={handleClearHistory}
         >
-          Clear Chat
+          Clear History
         </Button>
       </div>
 
       {/* Main chat viewport */}
-      <div className="grow bg-white border border-slate-200/80 rounded-2xl shadow-sm flex flex-col justify-between overflow-hidden">
+      <div className="grow bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl shadow-xs flex flex-col justify-between overflow-hidden">
         {/* Messages list */}
-        <div className="grow p-6 overflow-y-auto flex flex-col gap-5">
+        <div className="grow p-6 overflow-y-auto flex flex-col gap-6">
           {messages.map((msg) => (
             <div
               key={msg.id}
-              className={`flex gap-3.5 max-w-[80%] ${msg.sender === "user" ? "ml-auto flex-row-reverse" : "mr-auto"}`}
+              className={`flex gap-3.5 max-w-[85%] ${msg.sender === "user" ? "ml-auto flex-row-reverse" : "mr-auto"}`}
             >
-              <div className={`h-8 w-8 rounded-full flex items-center justify-center shrink-0 border ${
-                msg.sender === "user" ? "bg-slate-50 border-slate-200" : "bg-linear-to-tr from-primary-600 to-brand-500 border-transparent text-white"
+              <div className={`h-8 w-8 rounded-2xl flex items-center justify-center shrink-0 border shadow-xs ${
+                msg.sender === "user"
+                  ? "bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200"
+                  : "bg-linear-to-tr from-primary-600 to-brand-500 border-transparent text-white"
               }`}>
-                {msg.sender === "user" ? <User className="h-4 w-4 text-slate-600" /> : <Bot className="h-4 w-4" />}
+                {msg.sender === "user" ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
               </div>
-              <div className="flex flex-col gap-1">
-                <div className={`p-4 rounded-2xl text-xs leading-relaxed ${
+
+              <div className="flex flex-col gap-1 group">
+                <div className={`p-4 rounded-3xl text-xs leading-relaxed ${
                   msg.sender === "user"
                     ? "bg-primary-600 text-white rounded-br-none"
-                    : "bg-slate-50 text-slate-800 border border-slate-200/60 rounded-bl-none text-balance"
+                    : "bg-slate-50 dark:bg-slate-850 text-slate-800 dark:text-slate-200 border border-slate-200/60 dark:border-slate-800 rounded-bl-none text-balance"
                 }`}>
-                  {msg.text}
+                  {msg.text || (msg.isStreaming ? <AiThinkingAnimation size="sm" label="Generating response..." /> : "")}
                 </div>
-                <span className={`text-[9px] text-slate-400 font-semibold px-1 ${
-                  msg.sender === "user" ? "self-end" : "self-start"
-                }`}>{msg.timestamp}</span>
+
+                <div className={`flex items-center gap-2 px-1 ${msg.sender === "user" ? "self-end" : "self-start"}`}>
+                  <span className="text-[9px] text-slate-400 dark:text-slate-500 font-semibold">{msg.timestamp}</span>
+                  {msg.sender === "bot" && msg.text && (
+                    <button
+                      onClick={() => handleCopyText(msg.id, msg.text)}
+                      className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-opacity p-1"
+                      title="Copy text"
+                    >
+                      {copiedId === msg.id ? <Check className="h-3 w-3 text-emerald-500" /> : <Copy className="h-3 w-3" />}
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           ))}
 
-          {isTyping && (
-            <div className="flex gap-3.5 max-w-[80%] mr-auto items-center">
-              <div className="h-8 w-8 rounded-full bg-linear-to-tr from-primary-600 to-brand-500 flex items-center justify-center text-white shrink-0">
-                <Bot className="h-4 w-4 animate-bounce" />
-              </div>
-              <div className="flex gap-1.8 bg-slate-50 border border-slate-200/60 p-4.5 rounded-2xl rounded-bl-none items-center">
-                <span className="h-1.5 w-1.5 rounded-full bg-slate-400 animate-bounce" />
-                <span className="h-1.5 w-1.5 rounded-full bg-slate-400 animate-bounce delay-150" />
-                <span className="h-1.5 w-1.5 rounded-full bg-slate-400 animate-bounce delay-300" />
-              </div>
+          {isGenerating && (
+            <div className="mr-auto flex gap-3.5 items-center">
+              <AiThinkingAnimation size="sm" label="AI processing query..." />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleStopGeneration}
+                leftIcon={<StopCircle className="h-3.5 w-3.5 text-rose-500" />}
+                className="text-[10px] py-1"
+              >
+                Stop
+              </Button>
             </div>
           )}
+
           <div ref={chatEndRef} />
         </div>
 
         {/* Suggested prompts footer bar */}
-        <div className="px-6 py-4.5 border-t border-slate-100 flex flex-col gap-3.5 bg-slate-50/50 shrink-0">
+        <div className="px-6 py-4 border-t border-slate-100 dark:border-slate-800 flex flex-col gap-3.5 bg-slate-50/50 dark:bg-slate-950/40 shrink-0">
           {messages.length <= 1 && (
-            <div className="flex flex-wrap gap-2.5">
+            <div className="flex flex-wrap gap-2">
               {suggestions.map((sug, idx) => (
                 <button
                   key={idx}
                   onClick={() => handleSendMessage(sug.query)}
-                  className="px-3.5 py-2 bg-white border border-slate-200/80 hover:bg-primary-50 hover:border-primary-400 text-slate-650 hover:text-primary-750 text-[10px] font-bold rounded-xl transition-all shadow-sm shadow-slate-100/30 inline-flex items-center gap-1.5"
+                  className="px-3.5 py-2 bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 hover:bg-primary-50 dark:hover:bg-primary-950/40 hover:border-primary-400 text-slate-700 dark:text-slate-300 text-[11px] font-bold rounded-xl transition-all shadow-xs inline-flex items-center gap-1.5"
                 >
                   <Sparkles className="h-3.5 w-3.5 text-primary-500 shrink-0" />
                   {sug.label}
@@ -206,22 +231,39 @@ export const Assistant: React.FC = () => {
               e.preventDefault();
               handleSendMessage(input);
             }}
-            className="flex gap-3"
+            className="flex gap-2.5 items-center"
           >
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask your AI Career Mentor a question..."
-              className="grow px-4.5 py-3 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-primary-500"
-              disabled={isTyping}
+            <div className="relative flex-1">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Ask your AI Career Mentor a question..."
+                className="w-full px-4.5 py-3 pr-20 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 rounded-2xl text-xs focus:outline-none focus:border-primary-500 dark:focus:border-primary-500 transition-colors"
+                disabled={isGenerating}
+              />
+              <div className="absolute right-3 top-2.5 flex items-center gap-1 text-slate-400">
+                <button type="button" className="p-1 hover:text-slate-600 dark:hover:text-slate-200" title="Attach file (placeholder)">
+                  <Paperclip className="h-4 w-4" />
+                </button>
+                <button type="button" className="p-1 hover:text-slate-600 dark:hover:text-slate-200" title="Voice input (placeholder)">
+                  <Mic className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+
+            <Button
+              type="submit"
+              variant="primary"
+              disabled={!input.trim() || isGenerating}
+              leftIcon={<Send className="h-4 w-4" />}
+              className="rounded-2xl"
             />
-            <Button type="submit" variant="primary" disabled={!input.trim() || isTyping} leftIcon={<Send className="h-4 w-4" />} />
           </form>
         </div>
       </div>
-      
     </div>
   );
 };
+
 export default Assistant;
