@@ -49,8 +49,8 @@ export const PublicLayout: React.FC = () => {
       <header
         className={`fixed top-0 inset-x-0 z-40 transition-all duration-300 ${
           isScrolled
-            ? "bg-white/80 backdrop-blur-md shadow-sm border-b border-slate-100 py-3"
-            : "bg-transparent py-5"
+            ? "bg-slate-950/85 dark:bg-slate-950/90 backdrop-blur-md shadow-lg border-b border-white/10 py-3"
+            : "bg-slate-950/60 backdrop-blur-sm py-4 border-b border-white/10"
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
@@ -59,22 +59,22 @@ export const PublicLayout: React.FC = () => {
             <img
               src={logoImage}
               alt="Ascope Tech"
-              className="h-14 md:h-16 w-auto object-contain saturate-150 contrast-125 brightness-105 drop-shadow-md group-hover:scale-105 transition-all duration-300"
+              className="h-14 md:h-16 w-auto object-contain saturate-150 contrast-125 brightness-110 drop-shadow-lg group-hover:scale-105 transition-all duration-300"
             />
           </Link>
 
-          {/* Desktop Nav Items */}
-          <nav className="hidden md:flex items-center gap-1 bg-slate-100/50 p-1.5 rounded-full border border-slate-200/40">
+          {/* Desktop Nav Items: High Contrast Glass Pill */}
+          <nav className="hidden md:flex items-center gap-1 bg-slate-900/80 p-1.5 rounded-full border border-white/20 backdrop-blur-md shadow-xl">
             {navLinks.map((link) => {
               const active = location.pathname === link.path;
               return (
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`relative px-4 py-2 text-xs font-semibold tracking-wide rounded-full transition-all duration-300 ${
+                  className={`relative px-4 py-2 text-xs font-extrabold tracking-wide rounded-full transition-all duration-300 ${
                     active
-                      ? "text-primary-700 bg-white shadow-sm"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                      ? "text-white bg-gradient-to-r from-primary-600 to-indigo-600 shadow-md scale-[1.02]"
+                      : "text-slate-200 hover:text-white hover:bg-white/15"
                   }`}
                 >
                   {link.label}
@@ -91,6 +91,7 @@ export const PublicLayout: React.FC = () => {
                 <Button
                   variant="outline"
                   size="sm"
+                  className="bg-white/10 border-white/20 text-white hover:bg-white/20 font-bold backdrop-blur-sm"
                   onClick={() => {
                     if (user?.role === "admin") {
                       navigate("/admin/dashboard");
@@ -101,19 +102,19 @@ export const PublicLayout: React.FC = () => {
                 >
                   Go to Dashboard
                 </Button>
-                <Button variant="ghost" size="sm" onClick={logout}>
+                <Button variant="ghost" size="sm" className="text-slate-200 hover:text-white hover:bg-white/10 font-bold" onClick={logout}>
                   Logout
                 </Button>
               </>
             ) : (
               <>
                 <Link to="/login">
-                  <Button variant="text" size="sm" leftIcon={<LogIn className="h-4 w-4" />}>
+                  <Button variant="text" size="sm" className="text-white hover:text-primary-300 font-extrabold" leftIcon={<LogIn className="h-4 w-4" />}>
                     Login
                   </Button>
                 </Link>
                 <Link to="/onboarding">
-                  <Button variant="primary" size="sm" rightIcon={<ArrowRight className="h-4 w-4" />}>
+                  <Button variant="primary" size="sm" className="font-extrabold shadow-lg shadow-primary-500/30" rightIcon={<ArrowRight className="h-4 w-4" />}>
                     Get Started
                   </Button>
                 </Link>
@@ -125,7 +126,7 @@ export const PublicLayout: React.FC = () => {
           <Button
             variant="ghost"
             size="sm"
-            className="p-2 md:hidden text-slate-700 hover:bg-slate-100"
+            className="p-2 md:hidden text-white hover:bg-white/10"
             onClick={() => setMobileMenuOpen(true)}
             aria-label="Open navigation menu"
           >
