@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IntroductionAnimation } from "../../components/animations/IntroductionAnimation";
 import heroVideo from "../../assets/hero_1ascopetech.mp4";
+import heroVideo2 from "../../assets/herosection2ascopetech.mp4";
 import { useAuthStore } from "../../store/authStore";
 import { Button } from "../../components/common/Button";
 import { Card } from "../../components/common/Card";
@@ -295,7 +296,7 @@ export const Home: React.FC = () => {
                   playsInline
                   className="w-full h-full object-cover"
                 >
-                  <source src={heroVideo} type="video/mp4" />
+                  <source src={heroVideo2} type="video/mp4" />
                 </video>
               </div>
 
