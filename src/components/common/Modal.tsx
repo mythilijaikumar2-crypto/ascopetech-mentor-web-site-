@@ -24,16 +24,13 @@ export const Modal: React.FC<ModalProps> = ({
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
-  // Close on Escape key press
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
+      if (e.key === "Escape") onClose();
     };
     if (isOpen) {
       window.addEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "hidden"; // Prevent background scroll
+      document.body.style.overflow = "hidden";
     }
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
@@ -41,7 +38,7 @@ export const Modal: React.FC<ModalProps> = ({
     };
   }, [isOpen, onClose]);
 
-  const sizes = {
+  const sizes: Record<string, string> = {
     sm: "max-w-sm",
     md: "max-w-md",
     lg: "max-w-lg",
@@ -54,17 +51,17 @@ export const Modal: React.FC<ModalProps> = ({
     <AnimatePresence>
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
-          {/* Backdrop overlay */}
+          {/* Backdrop */}
           <m.div
             variants={fadeIn}
             initial="hidden"
             animate="visible"
             exit="exit"
             onClick={onClose}
-            className="fixed inset-0 bg-slate-950/70 backdrop-blur-md"
+            className="fixed inset-0 [background:rgba(13,27,62,0.55)] backdrop-blur-sm"
           />
 
-          {/* Modal Container */}
+          {/* Panel */}
           <m.div
             ref={modalRef}
             variants={modalAnimation}
@@ -74,15 +71,18 @@ export const Modal: React.FC<ModalProps> = ({
             role="dialog"
             aria-modal="true"
             className={clsx(
-              "relative w-full bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col z-10 max-h-[90vh] overflow-hidden text-slate-900 dark:text-slate-100",
+              "relative w-full flex flex-col z-10 max-h-[90vh] overflow-hidden rounded-3xl",
+              "[background-color:var(--bg-surface)] [border:1px_solid_var(--border-color)] [box-shadow:var(--shadow-xl)]",
               sizes[size]
             )}
           >
             {/* Header */}
             {(title || showCloseButton) && (
-              <div className="flex items-center justify-between px-6 py-4.5 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/50">
+              <div
+                className="flex items-center justify-between px-6 py-4 [border-bottom:1px_solid_var(--divider-color)] [background-color:var(--bg-card)]"
+              >
                 {title ? (
-                  <h3 className="text-base font-extrabold text-slate-900 dark:text-slate-100 tracking-tight text-balance">
+                  <h3 className="text-base font-extrabold tracking-tight text-balance [color:var(--text-heading)]">
                     {title}
                   </h3>
                 ) : (
@@ -92,18 +92,18 @@ export const Modal: React.FC<ModalProps> = ({
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="p-1 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
+                    className="p-1.5 rounded-lg [color:var(--text-muted)] hover:[background-color:var(--bg-section)]"
                     onClick={onClose}
                     aria-label="Close modal"
                   >
-                    <X className="h-5 w-5" />
+                    <X className="h-4.5 w-4.5" />
                   </Button>
                 )}
               </div>
             )}
 
-            {/* Scrollable Content */}
-            <div className="flex-1 px-6 py-5 overflow-y-auto text-sm text-slate-700 dark:text-slate-300">
+            {/* Content */}
+            <div className="flex-1 px-6 py-5 overflow-y-auto text-sm [color:var(--text-paragraph)]">
               {children}
             </div>
           </m.div>

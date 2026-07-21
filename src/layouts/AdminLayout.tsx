@@ -49,14 +49,15 @@ export const AdminLayout: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen flex bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-250">
+    <div className="min-h-screen flex transition-colors duration-250" style={{ backgroundColor: "var(--bg-background)", color: "var(--text-paragraph)" }}>
       {/* Desktop Sidebar */}
       <aside
-        className={`hidden md:flex flex-col bg-slate-950 text-slate-300 border-r border-slate-900 transition-all duration-300 relative z-30 ${
+        className={`hidden md:flex flex-col text-slate-200 transition-all duration-300 relative z-30 ${
           sidebarExpanded ? "w-64" : "w-20"
         }`}
+        style={{ backgroundColor: "#0d1b3e", borderRight: "1px solid rgba(171,196,255,0.15)" }}
       >
-        <div className={`p-6 border-b border-slate-900 flex items-center justify-between ${sidebarExpanded ? "px-6" : "px-4 justify-center"}`}>
+        <div className={`p-6 flex items-center justify-between ${sidebarExpanded ? "px-6" : "px-4 justify-center"}`} style={{ borderBottom: "1px solid rgba(171,196,255,0.12)" }}>
           {sidebarExpanded ? (
             <Link to="/" className="flex items-center gap-2.5">
               <img src={logoImage} alt="Ascope Tech" className="h-11 md:h-12 w-auto object-contain saturate-150 contrast-125 brightness-110 drop-shadow-md" />
@@ -83,11 +84,11 @@ export const AdminLayout: React.FC = () => {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all group ${
-                  active
-                    ? "bg-red-500/15 text-red-400 border border-red-500/30"
-                    : "hover:bg-slate-900 text-slate-400 hover:text-white"
-                }`}
+                className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-extrabold tracking-wide transition-all group"
+                style={active
+                  ? { background: "linear-gradient(135deg,#ef4444,#f87171)", color: "#ffffff", boxShadow: "0 2px 10px rgba(239,68,68,0.3)" }
+                  : { color: "rgba(171,196,255,0.8)" }
+                }
               >
                 <Icon className={`h-4.5 w-4.5 shrink-0 ${active ? "text-red-400" : "text-slate-400 group-hover:text-slate-200"}`} />
                 {sidebarExpanded && <span className="truncate">{item.label}</span>}
@@ -97,7 +98,7 @@ export const AdminLayout: React.FC = () => {
         </nav>
 
         {/* Logout Footer */}
-        <div className={`p-4 border-t border-slate-900 ${sidebarExpanded ? "px-5" : "px-3"}`}>
+        <div className={`p-4 ${sidebarExpanded ? "px-5" : "px-3"}`} style={{ borderTop: "1px solid rgba(171,196,255,0.12)" }}>
           <Button
             variant="ghost"
             className="w-full text-slate-400 hover:text-white hover:bg-slate-900 justify-start px-2 py-2.5"
@@ -111,7 +112,8 @@ export const AdminLayout: React.FC = () => {
         {/* Sidebar Toggle */}
         <button
           onClick={() => setSidebarExpanded(!sidebarExpanded)}
-          className="absolute bottom-16 -right-3 h-6 w-6 rounded-full bg-slate-950 border border-slate-800 text-slate-400 flex items-center justify-center z-40 shadow-md hover:text-white"
+          className="absolute bottom-16 -right-3 h-6 w-6 rounded-full flex items-center justify-center z-40 shadow-md hover:text-white"
+          style={{ backgroundColor: "#0d1b3e", border: "1px solid rgba(171,196,255,0.25)", color: "rgba(171,196,255,0.7)" }}
         >
           {sidebarExpanded ? <ChevronLeft className="h-3.5 w-3.5" /> : <ChevronRight className="h-3.5 w-3.5" />}
         </button>
@@ -160,7 +162,7 @@ export const AdminLayout: React.FC = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
         {/* Admin Header */}
-        <header className="h-16 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-6 flex items-center justify-between shrink-0 transition-colors duration-250">
+        <header className="h-16 px-6 flex items-center justify-between shrink-0 transition-colors duration-250" style={{ backgroundColor: "var(--bg-navbar)", borderBottom: "1px solid var(--border-subtle)" }}>
           <div className="flex items-center gap-4">
             <button
               onClick={() => setMobileSidebarOpen(true)}
@@ -182,7 +184,7 @@ export const AdminLayout: React.FC = () => {
         </header>
 
         {/* Scrollable Main Panels */}
-        <main className="flex-1 overflow-y-auto p-6 md:p-8 bg-slate-50 dark:bg-slate-950 transition-colors duration-250">
+        <main className="flex-1 overflow-y-auto p-6 md:p-8 transition-colors duration-250" style={{ backgroundColor: "var(--bg-section)" }}>
           <AnimatePresence mode="wait">
             <m.div
               key={location.pathname}

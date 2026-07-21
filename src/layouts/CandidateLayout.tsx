@@ -73,15 +73,16 @@ export const CandidateLayout: React.FC = () => {
   const unreadNotifications = notifications.filter((n) => !n.read);
 
   return (
-    <div className="min-h-screen flex bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 transition-colors duration-200">
+    <div className="min-h-screen flex transition-colors duration-250" style={{ backgroundColor: "var(--bg-background)", color: "var(--text-paragraph)" }}>
       {/* Desktop Sidebar */}
       <aside
-        className={`hidden md:flex flex-col bg-slate-900 dark:bg-slate-950 text-slate-300 border-r border-slate-800 transition-all duration-300 relative z-30 ${
+        className={`hidden md:flex flex-col text-slate-200 transition-all duration-300 relative z-30 ${
           sidebarExpanded ? "w-64" : "w-20"
         }`}
+        style={{ backgroundColor: "#0d1b3e", borderRight: "1px solid rgba(171,196,255,0.15)" }}
       >
         {/* Brand header */}
-        <div className={`p-6 border-b border-slate-800 flex items-center justify-between ${sidebarExpanded ? "px-6" : "px-4 justify-center"}`}>
+        <div className={`p-6 flex items-center justify-between ${sidebarExpanded ? "px-6" : "px-4 justify-center"}`} style={{ borderBottom: "1px solid rgba(171,196,255,0.12)" }}>
           {sidebarExpanded ? (
             <Link to="/" className="flex items-center gap-2.5">
               <img src={logoImage} alt="Ascope Tech" className="h-11 md:h-12 w-auto object-contain saturate-150 contrast-125 brightness-110 drop-shadow-md" />
@@ -108,13 +109,13 @@ export const CandidateLayout: React.FC = () => {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all group ${
-                  active
-                    ? "bg-primary-600 text-white shadow-xs shadow-primary-500/20"
-                    : "hover:bg-slate-800 text-slate-400 hover:text-white"
-                }`}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-extrabold tracking-wide transition-all group`}
+                style={active
+                  ? { background: "linear-gradient(135deg,#5b8dee,#7ba5f5)", color: "#ffffff", boxShadow: "0 2px 10px rgba(91,141,238,0.3)" }
+                  : { color: "rgba(171,196,255,0.8)" }
+                }
               >
-                <Icon className={`h-4.5 w-4.5 shrink-0 ${active ? "text-white" : "text-slate-400 group-hover:text-slate-200"}`} />
+                <Icon className="h-4.5 w-4.5 shrink-0" />
                 {sidebarExpanded && <span className="truncate">{item.label}</span>}
               </Link>
             );
@@ -122,7 +123,7 @@ export const CandidateLayout: React.FC = () => {
         </nav>
 
         {/* Sidebar Footer */}
-        <div className={`p-4 border-t border-slate-800 ${sidebarExpanded ? "px-5" : "px-3"}`}>
+        <div className={`p-4 ${sidebarExpanded ? "px-5" : "px-3"}`} style={{ borderTop: "1px solid rgba(171,196,255,0.12)" }}>
           <Button
             variant="ghost"
             className={`w-full text-slate-400 hover:text-white hover:bg-slate-800 justify-start px-2 py-2.5 ${!sidebarExpanded && "justify-center"}`}
@@ -136,7 +137,8 @@ export const CandidateLayout: React.FC = () => {
         {/* Expand/Collapse Toggle Button */}
         <button
           onClick={() => setSidebarExpanded(!sidebarExpanded)}
-          className="absolute bottom-16 -right-3 h-6 w-6 rounded-full bg-slate-900 border border-slate-850 hover:bg-slate-800 text-slate-400 flex items-center justify-center z-40 transition-colors shadow-md"
+          className="absolute bottom-16 -right-3 h-6 w-6 rounded-full flex items-center justify-center z-40 transition-colors shadow-md"
+          style={{ backgroundColor: "#0d1b3e", border: "1px solid rgba(171,196,255,0.25)", color: "rgba(171,196,255,0.7)" }}
         >
           {sidebarExpanded ? <ChevronLeft className="h-3.5 w-3.5" /> : <ChevronRight className="h-3.5 w-3.5" />}
         </button>
@@ -185,7 +187,7 @@ export const CandidateLayout: React.FC = () => {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
         {/* Dashboard Header */}
-        <header className="h-16 border-b border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 px-6 flex items-center justify-between shrink-0 transition-colors duration-200">
+        <header className="h-16 px-6 flex items-center justify-between shrink-0 transition-colors duration-250" style={{ backgroundColor: "var(--bg-navbar)", borderBottom: "1px solid var(--border-subtle)" }}>
           <div className="flex items-center gap-4">
             {/* Mobile Menu Toggle button */}
             <button
@@ -194,7 +196,7 @@ export const CandidateLayout: React.FC = () => {
             >
               <Menu className="h-6 w-6" />
             </button>
-            <h1 className="text-sm font-bold text-slate-800 dark:text-slate-100 capitalize tracking-tight">
+            <h1 className="text-sm font-extrabold capitalize tracking-tight" style={{ color: "var(--text-heading)" }}>
               Welcome back, {user?.name || "Candidate"}
             </h1>
           </div>
@@ -285,7 +287,7 @@ export const CandidateLayout: React.FC = () => {
         </header>
 
         {/* Scrollable Main Content */}
-        <main className="flex-1 overflow-y-auto p-6 md:p-8 bg-slate-50 dark:bg-slate-950 transition-colors duration-200">
+        <main className="flex-1 overflow-y-auto p-6 md:p-8 transition-colors duration-250" style={{ backgroundColor: "var(--bg-section)" }}>
           <AnimatePresence mode="wait">
             <m.div
               key={location.pathname}

@@ -44,14 +44,18 @@ export const PublicLayout: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50">
+    <div className="min-h-screen flex flex-col transition-colors duration-250" style={{ backgroundColor: "var(--bg-background)", color: "var(--text-paragraph)" }}>
       {/* Sticky Header Navigation */}
       <header
         className={`fixed top-0 inset-x-0 z-40 transition-all duration-300 ${
           isScrolled
-            ? "bg-slate-950/85 dark:bg-slate-950/90 backdrop-blur-md shadow-lg border-b border-white/10 py-3"
-            : "bg-slate-950/60 backdrop-blur-sm py-4 border-b border-white/10"
+            ? "backdrop-blur-md shadow-lg py-3"
+            : "backdrop-blur-sm py-4"
         }`}
+        style={{
+          backgroundColor: isScrolled ? "rgba(13,27,62,0.88)" : "rgba(13,27,62,0.72)",
+          borderBottom: "1px solid rgba(171,196,255,0.15)"
+        }}
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           {/* Logo */}
@@ -63,19 +67,23 @@ export const PublicLayout: React.FC = () => {
             />
           </Link>
 
-          {/* Desktop Nav Items: High Contrast Glass Pill */}
-          <nav className="hidden md:flex items-center gap-1 bg-slate-900/80 p-1.5 rounded-full border border-white/20 backdrop-blur-md shadow-xl">
+          {/* Desktop Nav Pill */}
+          <nav
+            className="hidden md:flex items-center gap-1 p-1.5 rounded-full backdrop-blur-md"
+            style={{ backgroundColor: "rgba(20,40,80,0.75)", border: "1px solid rgba(171,196,255,0.25)" }}
+          >
             {navLinks.map((link) => {
               const active = location.pathname === link.path;
               return (
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`relative px-4 py-2 text-xs font-extrabold tracking-wide rounded-full transition-all duration-300 ${
+                  className={`relative px-4 py-2 text-xs font-extrabold tracking-wide rounded-full transition-all duration-250 ${
                     active
-                      ? "text-white bg-gradient-to-r from-primary-600 to-indigo-600 shadow-md scale-[1.02]"
-                      : "text-slate-200 hover:text-white hover:bg-white/15"
+                      ? "text-white scale-[1.02] shadow-md"
+                      : "text-blue-100 hover:text-white hover:bg-white/10"
                   }`}
+                  style={active ? { background: "linear-gradient(135deg,#5b8dee,#abc4ff)", boxShadow: "0 2px 10px rgba(91,141,238,0.4)" } : {}}
                 >
                   {link.label}
                 </Link>
@@ -89,9 +97,9 @@ export const PublicLayout: React.FC = () => {
             {isAuthenticated ? (
               <>
                 <Button
-                  variant="outline"
+                  variant="glass"
                   size="sm"
-                  className="bg-white/10 border-white/20 text-white hover:bg-white/20 font-bold backdrop-blur-sm"
+                  className="font-bold"
                   onClick={() => {
                     if (user?.role === "admin") {
                       navigate("/admin/dashboard");
@@ -102,19 +110,19 @@ export const PublicLayout: React.FC = () => {
                 >
                   Go to Dashboard
                 </Button>
-                <Button variant="ghost" size="sm" className="text-slate-200 hover:text-white hover:bg-white/10 font-bold" onClick={logout}>
+                <Button variant="ghost" size="sm" className="font-bold" onClick={logout}>
                   Logout
                 </Button>
               </>
             ) : (
               <>
                 <Link to="/login">
-                  <Button variant="text" size="sm" className="text-white hover:text-primary-300 font-extrabold" leftIcon={<LogIn className="h-4 w-4" />}>
+                  <Button variant="text" size="sm" className="text-blue-100 hover:text-white font-extrabold" leftIcon={<LogIn className="h-4 w-4" />}>
                     Login
                   </Button>
                 </Link>
                 <Link to="/onboarding">
-                  <Button variant="primary" size="sm" className="font-extrabold shadow-lg shadow-primary-500/30" rightIcon={<ArrowRight className="h-4 w-4" />}>
+                  <Button variant="gradient" size="sm" className="font-extrabold" rightIcon={<ArrowRight className="h-4 w-4" />}>
                     Get Started
                   </Button>
                 </Link>
@@ -126,7 +134,7 @@ export const PublicLayout: React.FC = () => {
           <Button
             variant="ghost"
             size="sm"
-            className="p-2 md:hidden text-white hover:bg-white/10"
+            className="p-2 md:hidden text-blue-100 hover:bg-white/10"
             onClick={() => setMobileMenuOpen(true)}
             aria-label="Open navigation menu"
           >
@@ -222,7 +230,8 @@ export const PublicLayout: React.FC = () => {
         whileInView="visible"
         viewport={{ once: true, amount: 0.1 }}
         variants={fadeIn}
-        className="bg-slate-950 text-slate-200 py-16 border-t-2 border-primary-500/40 relative overflow-hidden"
+        className="text-slate-200 py-16 border-t-2 relative overflow-hidden"
+        style={{ backgroundColor: "#0d1b3e", borderTopColor: "rgba(171,196,255,0.25)" }}
       >
         {/* Ambient glow effect */}
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-600/10 rounded-full blur-3xl pointer-events-none" />

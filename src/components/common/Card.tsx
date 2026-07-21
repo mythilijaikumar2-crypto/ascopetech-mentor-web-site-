@@ -5,7 +5,7 @@ import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: "default" | "outline" | "glass" | "interactive" | "flat" | "accent";
+  variant?: "default" | "outline" | "glass" | "interactive" | "flat" | "accent" | "elevated";
   isHoverable?: boolean;
 }
 
@@ -16,15 +16,36 @@ export const Card: React.FC<CardProps> = ({
   isHoverable = false,
   ...props
 }) => {
-  const baseStyles = "rounded-2xl border transition-all duration-250";
-  
-  const variants = {
-    default: "bg-white dark:bg-slate-900 border-slate-200/80 dark:border-slate-800 shadow-sm text-slate-900 dark:text-slate-100",
-    outline: "bg-transparent border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100",
-    glass: "glass-card text-slate-900 dark:text-slate-100",
-    interactive: "bg-white dark:bg-slate-900 border-slate-200/80 dark:border-slate-800 hover:border-blue-500/50 dark:hover:border-blue-400/50 shadow-sm hover:shadow-lg transition-all duration-250 cursor-pointer text-slate-900 dark:text-slate-100",
-    flat: "bg-slate-100/70 dark:bg-slate-950/60 border-transparent text-slate-900 dark:text-slate-100",
-    accent: "bg-white dark:bg-slate-900 border-l-4 border-l-blue-500 border-slate-200/80 dark:border-slate-800 shadow-md text-slate-900 dark:text-slate-100",
+  const base = "rounded-2xl transition-all duration-250";
+
+  const variants: Record<string, string> = {
+    /* Uses --bg-card (#c1d3fe in light, #111827 in dark) */
+    default:
+      "[background-color:var(--bg-card)] [border:1px_solid_var(--border-color)] [box-shadow:var(--shadow-sm)] [color:var(--text-title)]",
+
+    /* Transparent outline */
+    outline:
+      "bg-transparent [border:1.5px_solid_var(--border-color)] [color:var(--text-title)]",
+
+    /* Glassmorphism */
+    glass:
+      "glass-card [color:var(--text-title)]",
+
+    /* Interactive — lighter surface, lifts on hover */
+    interactive:
+      "[background-color:var(--bg-surface)] [border:1px_solid_var(--border-subtle)] hover:[border-color:var(--color-primary)] hover:[box-shadow:var(--shadow-lg)] transition-all duration-250 cursor-pointer [color:var(--text-title)]",
+
+    /* Flat — section level */
+    flat:
+      "[background-color:var(--bg-section)] border-transparent [color:var(--text-title)]",
+
+    /* Accent — left border stripe */
+    accent:
+      "[background-color:var(--bg-card)] [border:1px_solid_var(--border-color)] border-l-4 [border-l-color:var(--color-primary)] [box-shadow:var(--shadow-md)] [color:var(--text-title)]",
+
+    /* Elevated — highest card surface (#abc4ff in light) */
+    elevated:
+      "[background-color:var(--bg-card-elevated)] [border:1px_solid_var(--border-color)] [box-shadow:var(--shadow-md)] [color:var(--text-heading)]",
   };
 
   if (isHoverable) {
@@ -33,7 +54,7 @@ export const Card: React.FC<CardProps> = ({
         variants={cardHover}
         initial="initial"
         whileHover="hover"
-        className={twMerge(clsx(baseStyles, variants[variant], className))}
+        className={twMerge(clsx(base, variants[variant], className))}
         {...props}
       >
         {children}
@@ -42,10 +63,7 @@ export const Card: React.FC<CardProps> = ({
   }
 
   return (
-    <div
-      className={twMerge(clsx(baseStyles, variants[variant], className))}
-      {...props}
-    >
+    <div className={twMerge(clsx(base, variants[variant], className))} {...props}>
       {children}
     </div>
   );

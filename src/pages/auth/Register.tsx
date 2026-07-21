@@ -33,10 +33,14 @@ export const Register: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col gap-6 text-slate-900 dark:text-slate-100">
-      <div className="flex flex-col gap-1 text-center sm:text-left">
-        <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Create your Account</h1>
-        <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Sign up in seconds to start building CVs and practicing mock interviews.</p>
+    <div className="flex flex-col gap-6" style={{ color: "var(--text-paragraph)" }}>
+      <div className="flex flex-col gap-1">
+        <h1 className="text-2xl font-black tracking-tight" style={{ color: "var(--text-heading)" }}>
+          Create your Account
+        </h1>
+        <p className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>
+          Sign up in seconds to start building CVs and practising mock interviews.
+        </p>
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -58,31 +62,28 @@ export const Register: React.FC = () => {
           required
         />
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="password" className="text-xs font-bold text-slate-800 dark:text-slate-200">Password</label>
+          <label htmlFor="password" className="text-xs font-extrabold tracking-wide" style={{ color: "var(--text-title)" }}>
+            Password
+          </label>
           <input
             id="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-2.5 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 shadow-xs"
+            className="theme-input w-full px-4 py-2.5 text-sm"
             placeholder="••••••••"
             required
           />
         </div>
 
-        <Button
-          type="submit"
-          variant="primary"
-          isLoading={loading}
-          className="w-full mt-2 py-3"
-        >
+        <Button type="submit" variant="primary" isLoading={loading} className="w-full mt-2 py-3">
           Create Account
         </Button>
       </form>
 
-      <p className="text-center text-xs text-slate-500 dark:text-slate-400 font-medium">
+      <p className="text-center text-xs font-medium" style={{ color: "var(--text-muted)" }}>
         Already have an account?{" "}
-        <Link to="/login" className="font-extrabold text-blue-600 dark:text-blue-400 hover:underline">
+        <Link to="/login" className="font-extrabold hover:underline" style={{ color: "var(--color-primary)" }}>
           Sign in here
         </Link>
       </p>

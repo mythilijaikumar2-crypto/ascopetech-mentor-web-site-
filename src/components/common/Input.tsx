@@ -6,24 +6,31 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
   label?: string;
   error?: string;
   helperText?: string;
+  leftIcon?: React.ReactNode;
 }
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type = "text", label, error, helperText, disabled, id, ...props }, ref) => {
+  ({ className, type = "text", label, error, helperText, disabled, id, leftIcon, ...props }, ref) => {
     return (
       <div className="w-full flex flex-col gap-1.5">
         {label && (
           <label
             htmlFor={id}
             className={clsx(
-              "text-xs font-bold text-slate-800 dark:text-slate-200 tracking-wide",
-              disabled && "opacity-60"
+              "text-xs font-extrabold tracking-wide",
+              "[color:var(--text-title)]",
+              disabled && "opacity-55"
             )}
           >
             {label}
           </label>
         )}
         <div className="relative">
+          {leftIcon && (
+            <div className="absolute inset-y-0 left-3.5 flex items-center pointer-events-none [color:var(--text-muted)]">
+              {leftIcon}
+            </div>
+          )}
           <input
             id={id}
             ref={ref}
@@ -31,8 +38,9 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             disabled={disabled}
             className={twMerge(
               clsx(
-                "w-full px-4 py-2.5 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-800 rounded-xl text-sm transition-all duration-250 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 disabled:opacity-50 disabled:bg-slate-50 dark:disabled:bg-slate-950 placeholder:text-slate-400 dark:placeholder:text-slate-500 shadow-xs",
-                error && "border-red-500 dark:border-red-500 focus:border-red-500 focus:ring-red-500/20"
+                "theme-input w-full py-2.5 text-sm transition-all duration-250 disabled:opacity-50",
+                leftIcon ? "pl-10 pr-4" : "px-4",
+                error && "!border-red-500 focus:!ring-red-400/25"
               ),
               className
             )}
@@ -40,10 +48,10 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           />
         </div>
         {error && (
-          <p className="text-xs text-red-500 dark:text-red-400 font-semibold">{error}</p>
+          <p className="text-xs text-red-600 dark:text-red-400 font-semibold animate-fade-in-up">{error}</p>
         )}
         {!error && helperText && (
-          <p className="text-xs text-slate-500 dark:text-slate-400 font-normal">{helperText}</p>
+          <p className="text-xs [color:var(--text-muted)] font-medium">{helperText}</p>
         )}
       </div>
     );
