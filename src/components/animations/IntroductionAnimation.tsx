@@ -63,7 +63,7 @@ export const IntroductionAnimation: React.FC<IntroductionAnimationProps> = ({
               transition={{ duration: 0.5, ease: "easeOut" }}
               src={logoImage}
               alt="Ascope Tech"
-              className="h-20 md:h-24 w-auto object-contain drop-shadow-xs"
+              className="h-20 md:h-24 w-auto object-contain saturate-150 contrast-125 brightness-105 drop-shadow-md"
             />
 
             {/* Brand Title Reveal */}

@@ -84,15 +84,11 @@ export const CandidateLayout: React.FC = () => {
         <div className={`p-6 border-b border-slate-800 flex items-center justify-between ${sidebarExpanded ? "px-6" : "px-4 justify-center"}`}>
           {sidebarExpanded ? (
             <Link to="/" className="flex items-center gap-2.5">
-              <div className="bg-white px-2.5 py-1.5 rounded-xl border border-slate-700/60 shadow-xs flex items-center justify-center">
-                <img src={logoImage} alt="Ascope Tech" className="h-8 md:h-9 w-auto object-contain" />
-              </div>
+              <img src={logoImage} alt="Ascope Tech" className="h-11 md:h-12 w-auto object-contain saturate-150 contrast-125 brightness-110 drop-shadow-md" />
             </Link>
           ) : (
             <Link to="/">
-              <div className="bg-white p-1 rounded-lg border border-slate-700/60 flex items-center justify-center">
-                <img src={logoImage} alt="Ascope Tech" className="h-6 w-6 object-contain" />
-              </div>
+              <img src={logoImage} alt="Ascope Tech" className="h-8 w-auto object-contain saturate-150 contrast-125 brightness-110 drop-shadow-md" />
             </Link>
           )}
 

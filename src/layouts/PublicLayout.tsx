@@ -56,9 +56,11 @@ export const PublicLayout: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2.5 group">
-            <div className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 px-3 py-1.5 rounded-2xl shadow-xs group-hover:shadow-md transition-all duration-300 flex items-center justify-center">
-              <img src={logoImage} alt="Ascope Tech" className="h-10 md:h-12 w-auto object-contain group-hover:scale-105 transition-all duration-300" />
-            </div>
+            <img
+              src={logoImage}
+              alt="Ascope Tech"
+              className="h-14 md:h-16 w-auto object-contain saturate-150 contrast-125 brightness-105 drop-shadow-md group-hover:scale-105 transition-all duration-300"
+            />
           </Link>
 
           {/* Desktop Nav Items */}
@@ -231,15 +233,13 @@ export const PublicLayout: React.FC = () => {
           {/* Brand Info */}
           <m.div variants={staggerItem} className="flex flex-col gap-4">
             <Link to="/" className="flex items-center gap-2 max-w-fit">
-              <div className="bg-white px-3 py-2 rounded-xl border border-slate-700/80 shadow-md flex items-center justify-center">
-                <m.img
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.2 }}
-                  src={logoImage}
-                  alt="Ascope Tech"
-                  className="h-9 w-auto object-contain"
-                />
-              </div>
+              <m.img
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.2 }}
+                src={logoImage}
+                alt="Ascope Tech"
+                className="h-12 md:h-14 w-auto object-contain saturate-150 contrast-125 brightness-110 drop-shadow-md"
+              />
             </Link>
             <p className="text-xs leading-relaxed text-slate-300 font-normal">
               CareerAI is a premium AI-powered career mentor platform guiding you with personalized resume analysis, interactive mock interviews, study roadmaps, and targeted job recommendations.
