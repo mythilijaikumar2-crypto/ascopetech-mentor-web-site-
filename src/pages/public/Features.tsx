@@ -2,6 +2,7 @@ import React from "react";
 import { Card } from "../../components/common/Card";
 import { Badge } from "../../components/common/Badge";
 import { Sparkles, FileText, MessageSquare, Map, Briefcase, Bot } from "lucide-react";
+import featureVideo from "../../assets/herosection2ascopetech.mp4";
 
 export const Features: React.FC = () => {
   const featureList = [
@@ -52,25 +53,44 @@ export const Features: React.FC = () => {
           </p>
         </div>
 
+        {/* Feature HD Video Demo Player */}
+        <div className="relative group rounded-3xl overflow-hidden shadow-2xl border border-slate-200/80 bg-slate-900">
+          <div className="px-5 py-3.5 bg-slate-950 border-b border-slate-800 flex items-center justify-between">
+            <span className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+              <Sparkles className="h-4 w-4 text-primary-400 animate-pulse" /> Platform Walkthrough & HD Video Demo
+            </span>
+            <Badge variant="success" className="text-[9px]">HD 1080P</Badge>
+          </div>
+          <div className="aspect-video bg-black overflow-hidden">
+            <video
+              autoPlay
+              loop
+              muted
+              controls
+              playsInline
+              className="w-full h-full object-cover"
+            >
+              <source src={featureVideo} type="video/mp4" />
+            </video>
+          </div>
+        </div>
+
         {/* Feature Sections */}
         <div className="flex flex-col gap-8">
           {featureList.map((f, i) => {
             const Icon = f.icon;
             return (
               <Card key={i} className="p-8 md:p-10 bg-white border-slate-100 shadow-sm flex flex-col md:flex-row gap-8 items-start">
-                <div className="h-12 w-12 rounded-2xl bg-primary-50 text-primary-650 flex items-center justify-center shrink-0 shadow-sm">
-                  <Icon className="h-6 w-6" />
+                <div className="h-14 w-14 rounded-2xl bg-primary-50 dark:bg-primary-950/60 text-primary-600 dark:text-primary-400 flex items-center justify-center shrink-0 shadow-xs">
+                  <Icon className="h-7 w-7" />
                 </div>
-                <div className="flex flex-col gap-4">
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-850 tracking-tight mb-1">{f.title}</h3>
-                    <p className="text-xs text-slate-500 leading-relaxed">{f.desc}</p>
-                  </div>
-                  <div className="flex flex-wrap gap-2.5">
-                    {f.details.map((detail, idx) => (
-                      <span key={idx} className="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-50 text-slate-600 rounded-full text-[10px] font-semibold border border-slate-200/50">
-                        <Sparkles className="h-3 w-3 text-primary-600" />
-                        {detail}
+                <div className="flex flex-col gap-3 flex-1">
+                  <h3 className="text-xl font-extrabold text-slate-900 tracking-tight">{f.title}</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">{f.desc}</p>
+                  <div className="flex flex-wrap gap-2.5 mt-2">
+                    {f.details.map((d, idx) => (
+                      <span key={idx} className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100 text-[11px] font-bold text-slate-700">
+                        <Sparkles className="h-3 w-3 text-primary-500" /> {d}
                       </span>
                     ))}
                   </div>
@@ -79,9 +99,7 @@ export const Features: React.FC = () => {
             );
           })}
         </div>
-
       </div>
     </div>
   );
 };
-export default Features;
