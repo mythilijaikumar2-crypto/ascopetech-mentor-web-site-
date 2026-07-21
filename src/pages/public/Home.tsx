@@ -191,56 +191,74 @@ export const Home: React.FC = () => {
         </video>
 
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          {/* Hero left text content */}
+          {/* Hero left text content: Sleek Floating Typography without heavy box container */}
           <m.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="lg:col-span-6 flex flex-col gap-6 p-6 md:p-8 rounded-3xl bg-slate-950/70 backdrop-blur-md border border-white/20 shadow-2xl text-white"
+            className="lg:col-span-6 flex flex-col gap-6"
           >
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary-950/80 border border-primary-700/80 max-w-fit shadow-xs">
-              <Sparkles className="h-4 w-4 text-primary-400 animate-pulse" />
-              <span className="text-[11px] font-extrabold text-primary-200 uppercase tracking-wider">
+            {/* Glowing AI Pill Badge */}
+            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-gradient-to-r from-primary-500/20 via-indigo-500/20 to-brand-500/20 border border-primary-400/40 backdrop-blur-md shadow-lg shadow-primary-500/10 max-w-fit">
+              <Sparkles className="h-4 w-4 text-primary-300 animate-pulse" />
+              <span className="text-xs font-extrabold text-primary-200 uppercase tracking-widest">
                 AI Career Guidance & Mentorship
               </span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white drop-shadow-md tracking-tight leading-tight text-balance">
+            {/* High-Contrast Bold Headline */}
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-[1.1] drop-shadow-[0_4px_20px_rgba(0,0,0,0.85)] text-balance">
               Build the Right Career with{" "}
-              <span className="bg-gradient-to-r from-primary-400 via-indigo-300 to-brand-400 bg-clip-text text-transparent drop-shadow-xs">
+              <span className="bg-gradient-to-r from-primary-300 via-indigo-200 to-brand-300 bg-clip-text text-transparent drop-shadow-sm">
                 AI-Powered Guidance
               </span>
             </h1>
 
-            <p className="text-base md:text-lg font-medium text-slate-200 leading-relaxed max-w-xl">
+            {/* Crisp Subtitle */}
+            <p className="text-base md:text-lg font-medium text-slate-100 leading-relaxed max-w-xl drop-shadow-[0_2px_10px_rgba(0,0,0,0.9)]">
               Discover suitable career paths, create an ATS-friendly resume, practice mock interviews, develop job-ready skills, and explore opportunities personalized for your goals.
             </p>
 
-            <div className="flex flex-wrap items-center gap-4.5 mt-2">
+            {/* Call to Action Buttons */}
+            <div className="flex flex-wrap items-center gap-4.5 mt-1">
               <Link to="/onboarding">
-                <Button variant="primary" size="lg" className="shadow-lg shadow-primary-500/30 text-sm font-bold px-6" rightIcon={<ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1.5" />}>
+                <Button
+                  variant="primary"
+                  size="lg"
+                  className="shadow-2xl shadow-primary-500/50 hover:shadow-primary-400/70 text-sm font-extrabold px-7 py-4 hover:scale-[1.03] transition-all duration-300"
+                  rightIcon={<ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1.5" />}
+                >
                   Get Started Free
                 </Button>
               </Link>
               <Link to="/features">
-                <Button variant="outline" size="lg" className="text-sm font-bold px-6 border-slate-700 text-slate-200 hover:bg-slate-800" rightIcon={<ArrowRight className="h-4.5 w-4.5 transition-transform duration-300 group-hover:translate-x-1" />}>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="text-sm font-extrabold px-7 py-4 bg-white/10 hover:bg-white/20 text-white border-white/30 backdrop-blur-md shadow-lg hover:scale-[1.03] transition-all duration-300"
+                  rightIcon={<ArrowRight className="h-4.5 w-4.5 transition-transform duration-300 group-hover:translate-x-1" />}
+                >
                   Explore Features
                 </Button>
               </Link>
             </div>
 
-            {/* Small Trust indicators */}
-            <div className="flex items-center gap-6 mt-6 pt-6 border-t border-slate-800">
+            {/* Floating Glass Trust Pill */}
+            <div className="inline-flex items-center gap-4 px-5 py-3 rounded-2xl bg-slate-900/60 border border-white/15 backdrop-blur-md shadow-2xl max-w-fit mt-3">
               <div className="flex -space-x-2">
                 {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="h-9 w-9 rounded-full border-2 border-slate-900 flex items-center justify-center font-bold text-xs text-white bg-indigo-600 shadow-sm">
+                  <div key={i} className="h-8 w-8 rounded-full border-2 border-slate-900 flex items-center justify-center font-bold text-xs text-white bg-indigo-600 shadow-sm">
                     {String.fromCharCode(64 + i)}
                   </div>
                 ))}
               </div>
-              <div>
-                <p className="text-sm font-extrabold text-white">Trusted by 10,000+ candidates</p>
-                <p className="text-xs text-slate-300 font-medium">Accelerating career transitions daily</p>
+              <div className="border-l border-white/20 pl-4">
+                <div className="flex items-center gap-1 text-amber-400 mb-0.5">
+                  {[...Array(5)].map((_, idx) => (
+                    <Star key={idx} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+                  ))}
+                </div>
+                <p className="text-xs font-extrabold text-white">Trusted by 10,000+ candidates</p>
               </div>
             </div>
           </m.div>
