@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { AnimatePresence, m, useReducedMotion } from "framer-motion";
 import logoImage from "../../assets/assope tech.png";
 import loadingVideo from "../../assets/loadingpageascopetech.mp4";
@@ -12,6 +12,8 @@ export const IntroductionAnimation: React.FC<IntroductionAnimationProps> = ({
   onComplete,
 }) => {
   const [isVisible, setIsVisible] = useState(true);
+  const [videoDuration, setVideoDuration] = useState<number>(3.5);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
@@ -23,18 +25,25 @@ export const IntroductionAnimation: React.FC<IntroductionAnimationProps> = ({
       return;
     }
 
-    // Auto-complete intro after video playback (3.5 seconds)
-    const timer = setTimeout(() => {
+    // Fallback timer in case video fails to fire onEnded
+    const fallbackTimer = setTimeout(() => {
       handleComplete();
-    }, 3500);
+    }, (videoDuration + 0.5) * 1000);
 
-    return () => clearTimeout(timer);
-  }, [prefersReducedMotion, onComplete]);
+    return () => clearTimeout(fallbackTimer);
+  }, [prefersReducedMotion, videoDuration, onComplete]);
 
   const handleComplete = () => {
     sessionStorage.setItem("career_ai_intro_played", "true");
     setIsVisible(false);
     onComplete();
+  };
+
+  const handleLoadedMetadata = (e: React.SyntheticEvent<HTMLVideoElement>) => {
+    const duration = e.currentTarget.duration;
+    if (duration && !isNaN(duration) && duration > 0) {
+      setVideoDuration(duration);
+    }
   };
 
   return (
@@ -45,12 +54,14 @@ export const IntroductionAnimation: React.FC<IntroductionAnimationProps> = ({
           exit={{ opacity: 0, scale: 0.98, transition: { duration: 0.5, ease: [0.25, 1, 0.5, 1] } }}
           className="fixed inset-0 bg-slate-950 flex flex-col items-center justify-center z-50 p-6 overflow-hidden select-none"
         >
-          {/* Full Screen Loading Background Video */}
+          {/* Full Screen Loading Background Video matched to video duration */}
           <video
+            ref={videoRef}
             autoPlay
-            loop
             muted
             playsInline
+            onLoadedMetadata={handleLoadedMetadata}
+            onEnded={handleComplete}
             className="absolute inset-0 w-full h-full object-cover pointer-events-none z-0 opacity-90 transition-opacity duration-300"
           >
             <source src={loadingVideo} type="video/mp4" />
@@ -101,20 +112,15 @@ export const IntroductionAnimation: React.FC<IntroductionAnimationProps> = ({
               Your intelligent partner for resume building, mock interviews, and personalized study roadmaps.
             </m.p>
 
-            {/* Loading Line Progress Bar */}
-            <m.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.3 }}
-              className="w-44 h-1.5 bg-slate-800 rounded-full mt-3 overflow-hidden relative border border-white/10"
-            >
+            {/* Loading Line Progress Bar synced to video duration */}
+            <div className="w-48 h-1.5 bg-slate-800 rounded-full mt-3 overflow-hidden relative border border-white/10">
               <m.div
-                initial={{ left: "-100%" }}
-                animate={{ left: "100%" }}
-                transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }}
-                className="absolute top-0 bottom-0 w-1/2 bg-gradient-to-r from-primary-500 to-brand-400 rounded-full shadow-md"
+                initial={{ width: "0%" }}
+                animate={{ width: "100%" }}
+                transition={{ duration: videoDuration, ease: "linear" }}
+                className="h-full bg-gradient-to-r from-primary-500 to-brand-400 rounded-full shadow-md"
               />
-            </m.div>
+            </div>
           </div>
         </m.div>
       )}
