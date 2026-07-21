@@ -177,10 +177,10 @@ export const Home: React.FC = () => {
   return (
     <div className="w-full relative overflow-x-hidden">
       {/* 1. Hero Section */}
-      <section className="relative pt-12 pb-24 md:pt-20 md:pb-32 bg-linear-to-b from-primary-50/40 via-white to-slate-50/30 overflow-hidden">
+      <section className="relative pt-12 pb-24 md:pt-20 md:pb-32 bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 overflow-hidden transition-colors duration-200">
         {/* Decorative background vectors */}
-        <div className="absolute top-0 right-0 h-[500px] w-[500px] rounded-full bg-primary-200/20 blur-[120px] pointer-events-none -z-10" />
-        <div className="absolute bottom-0 left-0 h-[400px] w-[400px] rounded-full bg-brand-200/20 blur-[100px] pointer-events-none -z-10" />
+        <div className="absolute top-0 right-0 h-[500px] w-[500px] rounded-full bg-primary-300/20 dark:bg-primary-900/20 blur-[120px] pointer-events-none -z-10" />
+        <div className="absolute bottom-0 left-0 h-[400px] w-[400px] rounded-full bg-brand-300/20 dark:bg-brand-900/20 blur-[100px] pointer-events-none -z-10" />
 
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Hero left text content */}
@@ -190,46 +190,49 @@ export const Home: React.FC = () => {
             transition={{ duration: 0.6 }}
             className="lg:col-span-6 flex flex-col gap-6"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary-50 border border-primary-100/50 max-w-fit shadow-sm">
-              <Sparkles className="h-4 w-4 text-primary-600 animate-pulse" />
-              <span className="text-[10px] font-bold text-primary-800 uppercase tracking-wider">
-                AI Career Guidance
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary-100/80 dark:bg-primary-950/80 border border-primary-200 dark:border-primary-800 max-w-fit shadow-xs">
+              <Sparkles className="h-4 w-4 text-primary-600 dark:text-primary-400 animate-pulse" />
+              <span className="text-[11px] font-extrabold text-primary-900 dark:text-primary-200 uppercase tracking-wider">
+                AI Career Guidance & Mentorship
               </span>
             </div>
-            <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight text-balance">
+
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-slate-950 dark:text-white tracking-tight leading-tight text-balance">
               Build the Right Career with{" "}
-              <span className="bg-linear-to-r from-primary-600 to-brand-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-primary-600 via-indigo-600 to-brand-500 bg-clip-text text-transparent drop-shadow-xs">
                 AI-Powered Guidance
               </span>
             </h1>
-            <p className="text-sm md:text-base text-slate-655 leading-relaxed">
+
+            <p className="text-base md:text-lg font-medium text-slate-700 dark:text-slate-300 leading-relaxed max-w-xl">
               Discover suitable career paths, create an ATS-friendly resume, practice mock interviews, develop job-ready skills, and explore opportunities personalized for your goals.
             </p>
+
             <div className="flex flex-wrap items-center gap-4.5 mt-2">
               <Link to="/onboarding">
-                <Button variant="primary" size="lg" rightIcon={<ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1.5" />}>
+                <Button variant="primary" size="lg" className="shadow-lg shadow-primary-500/20 text-sm font-bold px-6" rightIcon={<ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1.5" />}>
                   Get Started Free
                 </Button>
               </Link>
               <Link to="/features">
-                <Button variant="outline" size="lg" rightIcon={<ArrowRight className="h-4.5 w-4.5 transition-transform duration-300 group-hover:translate-x-1" />}>
+                <Button variant="outline" size="lg" className="text-sm font-bold px-6 dark:border-slate-700 dark:text-slate-200" rightIcon={<ArrowRight className="h-4.5 w-4.5 transition-transform duration-300 group-hover:translate-x-1" />}>
                   Explore Features
                 </Button>
               </Link>
             </div>
 
             {/* Small Trust indicators */}
-            <div className="flex items-center gap-6 mt-6 pt-6 border-t border-slate-200/60">
+            <div className="flex items-center gap-6 mt-6 pt-6 border-t border-slate-200/80 dark:border-slate-800">
               <div className="flex -space-x-2">
                 {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className={`h-8 w-8 rounded-full border-2 border-white flex items-center justify-center font-bold text-[10px] text-white bg-slate-${200 + i * 200}`}>
+                  <div key={i} className="h-9 w-9 rounded-full border-2 border-white dark:border-slate-900 flex items-center justify-center font-bold text-xs text-white bg-indigo-600 shadow-sm">
                     {String.fromCharCode(64 + i)}
                   </div>
                 ))}
               </div>
               <div>
-                <p className="text-xs font-semibold text-slate-800">Trusted by 10,000+ candidates</p>
-                <p className="text-[10px] text-slate-500">Accelerating career transitions daily</p>
+                <p className="text-sm font-extrabold text-slate-900 dark:text-slate-100">Trusted by 10,000+ candidates</p>
+                <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">Accelerating career transitions daily</p>
               </div>
             </div>
           </m.div>
@@ -244,17 +247,17 @@ export const Home: React.FC = () => {
             {/* Interactive tilted dashboard container mockup */}
             <m.div
               style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-              className="w-full bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl border border-slate-100/80 overflow-hidden relative transition-shadow duration-300 hover:shadow-primary-500/5"
+              className="w-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-3xl shadow-2xl border border-slate-200/80 dark:border-slate-800 overflow-hidden relative transition-shadow duration-300 hover:shadow-primary-500/10"
             >
               {/* Toolbar */}
-              <div className="px-5 py-3 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+              <div className="px-5 py-3 border-b border-slate-200/80 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/50 flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
                   <div className="h-3 w-3 rounded-full bg-red-400" />
                   <div className="h-3 w-3 rounded-full bg-amber-400" />
                   <div className="h-3 w-3 rounded-full bg-emerald-400" />
                 </div>
-                <div className="h-4.5 w-32 bg-slate-200/50 rounded-full" />
-                <div className="h-4.5 w-4.5 bg-slate-200/70 rounded-full" />
+                <div className="h-4.5 w-32 bg-slate-200 dark:bg-slate-800 rounded-full" />
+                <div className="h-4.5 w-4.5 bg-slate-200 dark:bg-slate-800 rounded-full" />
               </div>
               {/* Dashboard Content */}
               <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4" style={{ transformStyle: "preserve-3d" }}>
@@ -262,24 +265,24 @@ export const Home: React.FC = () => {
                   {/* Career widget with depth translation */}
                   <m.div 
                     style={{ transform: "translateZ(40px)", transformStyle: "preserve-3d" }}
-                    className="p-4 bg-slate-50 rounded-2xl border border-slate-100/70 flex items-center gap-3 shadow-sm hover:bg-white hover:shadow-md transition-all duration-300"
+                    className="p-4 bg-slate-50 dark:bg-slate-950/60 rounded-2xl border border-slate-200/80 dark:border-slate-800 flex items-center gap-3 shadow-xs hover:bg-white dark:hover:bg-slate-900 hover:shadow-md transition-all duration-300"
                   >
-                    <div className="h-10 w-10 rounded-xl bg-primary-100 text-primary-600 flex items-center justify-center">
+                    <div className="h-10 w-10 rounded-xl bg-primary-100 dark:bg-primary-950/60 text-primary-600 dark:text-primary-400 flex items-center justify-center">
                       <Target className="h-5 w-5" />
                     </div>
                     <div>
-                      <p className="text-[10px] font-bold text-slate-400">SELECTED GOAL</p>
-                      <p className="text-xs font-extrabold text-slate-800">Frontend Engineer</p>
+                      <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500">SELECTED GOAL</p>
+                      <p className="text-xs font-extrabold text-slate-900 dark:text-slate-100">Frontend Engineer</p>
                     </div>
                   </m.div>
                   {/* ATS widget with depth translation */}
                   <m.div 
                     style={{ transform: "translateZ(60px)", transformStyle: "preserve-3d" }}
-                    className="p-4 bg-slate-50 rounded-2xl border border-slate-100/70 shadow-sm hover:bg-white hover:shadow-md transition-all duration-300"
+                    className="p-4 bg-slate-50 dark:bg-slate-950/60 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs hover:bg-white dark:hover:bg-slate-900 hover:shadow-md transition-all duration-300"
                   >
-                    <p className="text-[10px] font-bold text-slate-400">RESUME ATS SCORE</p>
+                    <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500">RESUME ATS SCORE</p>
                     <div className="flex items-center justify-between mt-1">
-                      <span className="text-xl font-extrabold text-slate-850">82/100</span>
+                      <span className="text-xl font-extrabold text-slate-900 dark:text-slate-100">82/100</span>
                       <Badge variant="success" className="text-[8px] font-extrabold">PASS</Badge>
                     </div>
                   </m.div>
@@ -287,10 +290,10 @@ export const Home: React.FC = () => {
                 {/* Visual readiness score ring with depth translation */}
                 <m.div 
                   style={{ transform: "translateZ(80px)", transformStyle: "preserve-3d" }}
-                  className="p-5 bg-linear-to-br from-primary-600 to-brand-500 rounded-2xl text-white flex flex-col justify-between shadow-lg shadow-primary-500/10 hover:shadow-primary-500/20 transition-all duration-300"
+                  className="p-5 bg-gradient-to-br from-primary-600 to-brand-500 rounded-2xl text-white flex flex-col justify-between shadow-lg shadow-primary-500/10 hover:shadow-primary-500/20 transition-all duration-300"
                 >
                   <div className="flex justify-between items-start">
-                    <span className="text-[10px] font-bold tracking-wider uppercase opacity-85">READINESS</span>
+                    <span className="text-[10px] font-bold tracking-wider uppercase opacity-90">READINESS</span>
                     <TrendingUp className="h-4.5 w-4.5" />
                   </div>
                   <div>
@@ -305,13 +308,13 @@ export const Home: React.FC = () => {
             <m.div
               animate={{ y: [0, -8, 0] }}
               transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
-              className="absolute -top-4 -left-4 p-3 bg-white rounded-xl shadow-lg border border-slate-100 flex items-center gap-2.5 z-10"
+              className="absolute -top-4 -left-4 p-3 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 flex items-center gap-2.5 z-10"
               style={{ transform: "translateZ(100px)" }}
             >
-              <div className="h-6 w-6 rounded-md bg-emerald-100 text-emerald-600 flex items-center justify-center">
+              <div className="h-6 w-6 rounded-md bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
                 <CheckCircle2 className="h-4 w-4" />
               </div>
-              <span className="text-[10px] font-bold text-slate-750">Interview Passed!</span>
+              <span className="text-[10px] font-bold text-slate-800 dark:text-slate-200">Interview Passed!</span>
             </m.div>
 
             <m.div
@@ -330,13 +333,13 @@ export const Home: React.FC = () => {
             <m.div
               animate={{ rotate: 360 }}
               transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
-              className="absolute -top-12 -right-12 h-24 w-24 rounded-full bg-linear-to-tr from-primary-400/20 to-brand-500/20 blur-xl -z-10"
+              className="absolute -top-12 -right-12 h-24 w-24 rounded-full bg-gradient-to-tr from-primary-400/20 to-brand-500/20 blur-xl -z-10"
               style={{ transform: "translateZ(-30px)" }}
             />
             <m.div
               animate={{ scale: [0.95, 1.05, 0.95] }}
               transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
-              className="absolute -bottom-16 -left-16 h-36 w-36 rounded-full bg-linear-to-tr from-brand-400/10 to-indigo-500/15 blur-2xl -z-10"
+              className="absolute -bottom-16 -left-16 h-36 w-36 rounded-full bg-gradient-to-tr from-brand-400/10 to-indigo-500/15 blur-2xl -z-10"
               style={{ transform: "translateZ(-50px)" }}
             />
           </div>
