@@ -1,17 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "../../components/common/Card";
 import { Badge } from "../../components/common/Badge";
 import { Button } from "../../components/common/Button";
 import { Input } from "../../components/common/Input";
 import { Modal } from "../../components/common/Modal";
 import { Select } from "../../components/common/Select";
-import { mockJobs, Job } from "../../data/jobs";
+import { Job } from "../../data/jobs";
+import { useJobs } from "../../hooks";
 import { Search, Plus, Edit, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 export const AdminJobsPage: React.FC = () => {
-  const [jobs, setJobs] = useState<Job[]>(mockJobs);
+  const { jobs: initialJobs, loading } = useJobs();
+  const [jobs, setJobs] = useState<Job[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    if (initialJobs.length > 0) {
+      setJobs(initialJobs);
+    }
+  }, [initialJobs]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingJob, setEditingJob] = useState<Job | null>(null);
 

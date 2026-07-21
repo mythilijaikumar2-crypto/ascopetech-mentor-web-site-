@@ -6,14 +6,13 @@ import { Button } from "../../components/common/Button";
 import { Input } from "../../components/common/Input";
 import { Select } from "../../components/common/Select";
 import { useAuthStore } from "../../store/authStore";
-import { useJobStore } from "../../store/jobStore";
-import { mockJobs } from "../../data/jobs";
+import { useJobs } from "../../hooks";
 import { Search, MapPin, Briefcase, Bookmark, BookmarkCheck } from "lucide-react";
 import { toast } from "sonner";
 
 export const Jobs: React.FC = () => {
   const { isAuthenticated } = useAuthStore();
-  const { savedJobIds, saveJob, unsaveJob } = useJobStore();
+  const { jobs, savedJobIds, saveJob, unsaveJob } = useJobs();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("All");
   const [selectedType, setSelectedType] = useState("All");
@@ -36,7 +35,7 @@ export const Jobs: React.FC = () => {
     }
   };
 
-  const filteredJobs = mockJobs.filter((j) => {
+  const filteredJobs = jobs.filter((j) => {
     const matchesSearch = j.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       j.company.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesLocation = selectedLocation === "All" || j.location.includes(selectedLocation);

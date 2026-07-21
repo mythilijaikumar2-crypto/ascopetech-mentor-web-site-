@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { mockJobs, Job } from "../../data/jobs";
+import { Job } from "../../data/jobs";
 import { Card } from "../../components/common/Card";
 import { Badge } from "../../components/common/Badge";
 import { Button } from "../../components/common/Button";
 import { Modal } from "../../components/common/Modal";
 import { Select } from "../../components/common/Select";
 import { useAuthStore } from "../../store/authStore";
-import { useJobStore } from "../../store/jobStore";
-import { useResumeStore } from "../../store/resumeStore";
+import { useJobs, useResumes } from "../../hooks";
 import { ArrowLeft, MapPin, Briefcase, DollarSign, Calendar, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
@@ -16,8 +15,8 @@ export const JobDetails: React.FC = () => {
   const { jobId } = useParams<{ jobId: string }>();
   const [job, setJob] = useState<Job | null>(null);
   const { isAuthenticated } = useAuthStore();
-  const { savedJobIds, saveJob, unsaveJob, applyToJob, applications } = useJobStore();
-  const { resumes } = useResumeStore();
+  const { savedJobIds, saveJob, unsaveJob, submitApplication, applications, getJobById } = useJobs();
+  const { resumes } = useResumes();
   
   const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
   const [selectedResumeId, setSelectedResumeId] = useState("");
@@ -27,11 +26,12 @@ export const JobDetails: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const found = mockJobs.find((j) => j.id === jobId);
-    if (found) {
-      setJob(found);
+    if (jobId) {
+      getJobById(jobId).then((found) => {
+        if (found) setJob(found);
+      });
     }
-  }, [jobId]);
+  }, [jobId, getJobById]);
 
   if (!job) {
     return (

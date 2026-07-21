@@ -5,28 +5,28 @@ import { Card } from "../../components/common/Card";
 import { Badge } from "../../components/common/Badge";
 import { Button } from "../../components/common/Button";
 import { Modal } from "../../components/common/Modal";
-import { mockCareers, CareerPath } from "../../data/careers";
+import { CareerPath } from "../../data/careers";
+import { useCareers } from "../../hooks";
 import { Compass, CheckCircle2, Target, Check, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 
 export const Careers: React.FC = () => {
   const { selectedGoal, setSelectedGoal } = useProfileStore();
   const { loadRoadmap } = useRoadmapStore();
+  const { careers } = useCareers();
   
   const [recommendations, setRecommendations] = useState<CareerPath[]>([]);
   const [compareIds, setCompareIds] = useState<string[]>([]);
   const [isCompareModalOpen, setIsCompareModalOpen] = useState(false);
 
   useEffect(() => {
-    // Attempt to load from assessment results first
     const saved = localStorage.getItem("career_ai_recommendations");
     if (saved) {
       setRecommendations(JSON.parse(saved));
-    } else {
-      // Fallback: use mockCareers as recommendations list
-      setRecommendations(mockCareers);
+    } else if (careers.length > 0) {
+      setRecommendations(careers);
     }
-  }, []);
+  }, [careers]);
 
   const handleSelectGoal = (careerId: string, careerTitle: string) => {
     setSelectedGoal(careerId);

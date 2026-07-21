@@ -1,10 +1,11 @@
 import React from "react";
 import { Card } from "../../components/common/Card";
 import { Badge } from "../../components/common/Badge";
-import { mockCareers } from "../../data/careers";
+import { useCareers } from "../../hooks";
 import { Compass, TrendingUp } from "lucide-react";
 
 export const CareersPage: React.FC = () => {
+  const { careers, loading } = useCareers();
   return (
     <div className="flex flex-col gap-6 animate-fade-up">
       <div className="border-b border-slate-200 pb-5">
@@ -14,7 +15,7 @@ export const CareersPage: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {mockCareers.map((c) => (
+        {careers.map((c) => (
           <Card key={c.id} className="p-6 border-slate-200 bg-white shadow-sm flex flex-col justify-between min-h-[220px]">
             <div className="flex flex-col gap-4">
               <div className="flex justify-between items-start">

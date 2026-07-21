@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Card } from "../../components/common/Card";
 import { Button } from "../../components/common/Button";
 import { Badge } from "../../components/common/Badge";
-import { mockAssessmentQuestions } from "../../data/assessments";
-import { careerService } from "../../services/careerService";
+import { useCareers } from "../../hooks";
 import { useProfileStore } from "../../store/profileStore";
 import { ArrowLeft, ArrowRight, ClipboardList, CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
@@ -16,6 +15,7 @@ export const Assessment: React.FC = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisStep, setAnalysisStep] = useState(0);
   const { setOnboarding } = useProfileStore();
+  const { analyzeAssessment } = useCareers();
   const navigate = useNavigate();
 
   // Load answers from localStorage on mount
@@ -82,8 +82,8 @@ export const Assessment: React.FC = () => {
       setTimeout(() => {
         setAnalysisStep(3);
         setTimeout(async () => {
-          // Grade the quiz using careerService
-          const recommendations = await careerService.analyzeAssessment(answers);
+          // Grade the quiz using useCareers hook
+          const recommendations = await analyzeAssessment(answers);
           
           // Save recommended paths inside localStorage / profileStore
           localStorage.setItem("career_ai_recommendations", JSON.stringify(recommendations));

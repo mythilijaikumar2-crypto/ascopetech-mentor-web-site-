@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useJobStore } from "../../store/jobStore";
-import { useResumeStore } from "../../store/resumeStore";
-import { mockJobs } from "../../data/jobs";
+import { useJobs, useResumes } from "../../hooks";
 import { Card } from "../../components/common/Card";
 import { Badge } from "../../components/common/Badge";
 import { Button } from "../../components/common/Button";
@@ -12,8 +10,8 @@ import { Bookmark, MapPin, Briefcase, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 export const SavedJobs: React.FC = () => {
-  const { savedJobIds, unsaveJob, applyToJob, applications } = useJobStore();
-  const { resumes } = useResumeStore();
+  const { jobs, savedJobIds, unsaveJob, submitApplication, applications } = useJobs();
+  const { resumes } = useResumes();
   const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,7 +20,7 @@ export const SavedJobs: React.FC = () => {
   const [coverNote, setCoverNote] = useState("");
   const [isApplying, setIsApplying] = useState(false);
 
-  const savedJobs = mockJobs.filter((j) => savedJobIds.includes(j.id));
+  const savedJobs = jobs.filter((j) => savedJobIds.includes(j.id));
 
   const handleRemove = (e: React.MouseEvent, id: string) => {
     e.stopPropagation();

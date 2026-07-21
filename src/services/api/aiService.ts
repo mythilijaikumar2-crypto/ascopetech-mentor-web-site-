@@ -97,3 +97,5 @@ export class AiService {
     });
   }
 }
+
+export const aiService = AiService;

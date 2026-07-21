@@ -4,15 +4,17 @@ import { Card } from "../../components/common/Card";
 import { Badge } from "../../components/common/Badge";
 import { Button } from "../../components/common/Button";
 import { Input } from "../../components/common/Input";
-import { mockCareers, careerCategories } from "../../data/careers";
+import { useCareers } from "../../hooks";
+import { careerCategories } from "../../data/careers";
 import { Target, Search, ArrowRight } from "lucide-react";
 
 export const Careers: React.FC = () => {
+  const { careers, loading } = useCareers();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const navigate = useNavigate();
 
-  const filteredCareers = mockCareers.filter((c) => {
+  const filteredCareers = careers.filter((c) => {
     const matchesSearch = c.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       c.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === "All" || c.category === selectedCategory;

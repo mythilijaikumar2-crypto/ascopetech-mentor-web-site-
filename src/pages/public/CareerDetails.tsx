@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { mockCareers, CareerPath } from "../../data/careers";
+import { CareerPath } from "../../data/careers";
 import { Card } from "../../components/common/Card";
 import { Badge } from "../../components/common/Badge";
 import { Button } from "../../components/common/Button";
 import { useProfileStore } from "../../store/profileStore";
 import { useAuthStore } from "../../store/authStore";
+import { useCareers } from "../../hooks";
 import { ArrowLeft, Compass, CheckCircle2, XCircle, Clock, Target } from "lucide-react";
 import { toast } from "sonner";
 
@@ -14,15 +15,17 @@ export const CareerDetails: React.FC = () => {
   const [career, setCareer] = useState<CareerPath | null>(null);
   const { setSelectedGoal } = useProfileStore();
   const { isAuthenticated } = useAuthStore();
+  const { getCareerById } = useCareers();
   
   const navigate = useNavigate();
 
   useEffect(() => {
-    const found = mockCareers.find((c) => c.id === careerId);
-    if (found) {
-      setCareer(found);
+    if (careerId) {
+      getCareerById(careerId).then((found) => {
+        if (found) setCareer(found);
+      });
     }
-  }, [careerId]);
+  }, [careerId, getCareerById]);
 
   const handleSelectGoal = () => {
     if (!career) return;

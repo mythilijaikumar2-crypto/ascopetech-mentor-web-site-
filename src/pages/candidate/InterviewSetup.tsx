@@ -1,23 +1,22 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useInterviewStore } from "../../store/interviewStore";
 import { useProfileStore } from "../../store/profileStore";
-import { interviewService } from "../../services/interviewService";
 import { Card } from "../../components/common/Card";
 import { Badge } from "../../components/common/Badge";
 import { Button } from "../../components/common/Button";
 import { Select } from "../../components/common/Select";
-import { mockCareers } from "../../data/careers";
+import { useCareers, useInterviews } from "../../hooks";
 import { ArrowLeft, Play, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
 export const InterviewSetup: React.FC = () => {
   const { selectedGoal } = useProfileStore();
-  const { startSession } = useInterviewStore();
+  const { careers } = useCareers();
+  const { startSession, fetchQuestions } = useInterviews();
   const navigate = useNavigate();
 
-  // Setup options
-  const [roleId, setRoleId] = useState(selectedGoal || mockCareers[0].id);
+  const defaultRole = careers[0]?.id || "frontend-developer";
+  const [roleId, setRoleId] = useState(selectedGoal || defaultRole);
   const [difficulty, setDifficulty] = useState<"Entry" | "Mid" | "Senior">("Mid");
   const [focus, setFocus] = useState<"Technical" | "Behavioral" | "Mixed">("Mixed");
   const [questionCount, setQuestionCount] = useState("3");
@@ -28,10 +27,10 @@ export const InterviewSetup: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const career = mockCareers.find((c) => c.id === roleId) || mockCareers[0];
+      const career = careers.find((c) => c.id === roleId) || careers[0];
       const count = Number(questionCount) || 3;
       
-      const questions = await interviewService.getQuestionsForRole(roleId, count);
+      const questions = await fetchQuestions(roleId, count);
 
       const sessionId = `sess-${Math.random().toString(36).substr(2, 9)}`;
       

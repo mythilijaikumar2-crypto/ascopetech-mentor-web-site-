@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "../../components/common/Card";
 import { Badge } from "../../components/common/Badge";
 import { Button } from "../../components/common/Button";
 import { Input } from "../../components/common/Input";
 import { Select } from "../../components/common/Select";
 import { Modal } from "../../components/common/Modal";
-import { mockJobs, Job } from "../../data/jobs";
-import { mockCareers } from "../../data/careers";
+import { Job } from "../../data/jobs";
+import { useJobs, useCareers } from "../../hooks";
 import {
   Users,
   Target,
@@ -33,11 +33,19 @@ import {
 import { toast } from "sonner";
 
 export const AdminDashboard: React.FC = () => {
+  const { jobs: initialJobs } = useJobs();
+  const { careers } = useCareers();
   const [activeTab, setActiveTab] = useState<"jobs" | "candidates" | "users">("jobs");
   
   // Jobs Database Mock State for CRUD
-  const [jobs, setJobs] = useState<Job[]>(mockJobs);
+  const [jobs, setJobs] = useState<Job[]>([]);
   const [searchJob, setSearchJob] = useState("");
+
+  useEffect(() => {
+    if (initialJobs.length > 0) {
+      setJobs(initialJobs);
+    }
+  }, [initialJobs]);
   
   // Job modal state
   const [isJobModalOpen, setIsJobModalOpen] = useState(false);
