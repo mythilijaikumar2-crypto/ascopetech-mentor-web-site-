@@ -178,20 +178,20 @@ export const Home: React.FC = () => {
   return (
     <div className="w-full relative overflow-x-hidden">
       {/* 1. Hero Section */}
-      <section className="relative pt-12 pb-24 md:pt-20 md:pb-32 bg-gradient-to-b from-slate-50/80 via-white/90 to-slate-50/80 dark:from-slate-950/90 dark:via-slate-900/90 dark:to-slate-950/90 overflow-hidden transition-colors duration-200">
+      <section className="relative pt-12 pb-24 md:pt-20 md:pb-32 bg-slate-900 overflow-hidden transition-colors duration-200">
         {/* Background Video */}
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="absolute inset-0 w-full h-full object-cover pointer-events-none -z-20 opacity-25 dark:opacity-20 transition-opacity duration-300"
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none -z-20 opacity-85 dark:opacity-75 transition-opacity duration-300"
         >
           <source src={heroVideo} type="video/mp4" />
         </video>
 
         {/* Soft Backdrop Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/80 to-white/70 dark:from-slate-950/90 dark:via-slate-950/80 dark:to-slate-950/70 pointer-events-none -z-10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-white/60 via-white/40 to-transparent dark:from-slate-950/80 dark:via-slate-950/60 dark:to-slate-950/40 pointer-events-none -z-10" />
 
         {/* Decorative background vectors */}
         <div className="absolute top-0 right-0 h-[500px] w-[500px] rounded-full bg-primary-300/20 dark:bg-primary-900/20 blur-[120px] pointer-events-none -z-10" />
@@ -203,7 +203,7 @@ export const Home: React.FC = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="lg:col-span-6 flex flex-col gap-6"
+            className="lg:col-span-6 flex flex-col gap-6 p-6 md:p-8 rounded-3xl bg-white/75 dark:bg-slate-900/80 backdrop-blur-md border border-white/80 dark:border-slate-800/80 shadow-xl"
           >
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary-100/80 dark:bg-primary-950/80 border border-primary-200 dark:border-primary-800 max-w-fit shadow-xs">
               <Sparkles className="h-4 w-4 text-primary-600 dark:text-primary-400 animate-pulse" />
