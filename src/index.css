@@ -2,31 +2,73 @@
 
 @layer base {
   :root {
-    --bg-main: #f8fafc;
+    --bg-background: #f8fafc;
     --bg-surface: #ffffff;
     --bg-card: #ffffff;
-    --border-color: #e2e8f0;
-    --text-primary: #0f172a;
-    --text-secondary: #475569;
+    --bg-sidebar: #ffffff;
+    --bg-navbar: #ffffff;
+    --color-primary: #2563eb;
+    --color-primary-hover: #1d4ed8;
+    --color-secondary: #06b6d4;
+    --color-accent: #7c3aed;
+    --color-success: #16a34a;
+    --color-warning: #f59e0b;
+    --color-danger: #dc2626;
+    --color-info: #0ea5e9;
+    --text-heading: #0f172a;
+    --text-title: #1e293b;
+    --text-paragraph: #475569;
     --text-muted: #64748b;
-    --glass-bg: rgba(255, 255, 255, 0.7);
-    --glass-border: rgba(226, 232, 240, 0.8);
+    --text-placeholder: #94a3b8;
+    --border-color: #e2e8f0;
+    --divider-color: #f1f5f9;
+    --glass-bg: rgba(255, 255, 255, 0.65);
+    --glass-blur: 25px;
+    --gradient-primary: linear-gradient(135deg, #2563eb 0%, #06b6d4 50%, #7c3aed 100%);
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   }
 
   .dark {
-    --bg-main: #0b0f19;
-    --bg-surface: #111827;
-    --bg-card: #1e293b;
-    --border-color: #334155;
-    --text-primary: #f8fafc;
-    --text-secondary: #cbd5e1;
+    --bg-background: #020617;
+    --bg-surface: #0f172a;
+    --bg-card: #111827;
+    --bg-sidebar: #0b1220;
+    --bg-navbar: #0f172a;
+    --color-primary: #3b82f6;
+    --color-primary-hover: #60a5fa;
+    --color-secondary: #22d3ee;
+    --color-accent: #8b5cf6;
+    --color-success: #22c55e;
+    --color-warning: #fbbf24;
+    --color-danger: #ef4444;
+    --color-info: #38bdf8;
+    --text-heading: #f8fafc;
+    --text-title: #e2e8f0;
+    --text-paragraph: #cbd5e1;
     --text-muted: #94a3b8;
-    --glass-bg: rgba(15, 23, 42, 0.75);
-    --glass-border: rgba(51, 65, 85, 0.6);
+    --text-placeholder: #64748b;
+    --border-color: #1e293b;
+    --divider-color: #334155;
+    --glass-bg: rgba(17, 24, 39, 0.55);
+    --glass-blur: 30px;
+    --gradient-primary: linear-gradient(135deg, #2563eb 0%, #4f46e5 50%, #7c3aed 100%);
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+  }
+
+  *, ::before, ::after {
+    transition: background-color 250ms ease, border-color 250ms ease, color 250ms ease, opacity 250ms ease, box-shadow 250ms ease;
   }
 
   body {
-    @apply bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 antialiased font-sans overflow-x-hidden selection:bg-indigo-100 dark:selection:bg-indigo-900/60 selection:text-indigo-900 dark:selection:text-indigo-200 transition-colors duration-200;
+    background-color: var(--bg-background);
+    color: var(--text-paragraph);
+    @apply antialiased font-sans overflow-x-hidden selection:bg-blue-500/20 selection:text-blue-500;
   }
 }
 
@@ -41,7 +83,34 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-200 dark:bg-slate-800 rounded-full hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors;
+  background-color: var(--border-color);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--text-muted);
+}
+
+/* Glassmorphism Classes */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--border-color);
+}
+
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+}
+
+.gradient-text {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /* Custom utility styles */
@@ -49,21 +118,7 @@
   text-wrap: balance;
 }
 
-.glass-panel {
-  background: var(--glass-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--glass-border);
-}
-
-.glass-card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid var(--glass-border);
-}
-
-/* Custom animations and line drawing path for roadmap */
+/* Custom animations */
 @keyframes dash {
   to {
     stroke-dashoffset: 0;
@@ -91,7 +146,6 @@
   animation: pulse-glow 3s infinite ease-in-out;
 }
 
-/* Base styles for printing resumes */
 @media print {
   body {
     background: white !important;

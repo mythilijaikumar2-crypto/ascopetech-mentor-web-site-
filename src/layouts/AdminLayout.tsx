@@ -22,6 +22,7 @@ import {
 import { Button } from "../components/common/Button";
 import { Drawer } from "../components/common/Drawer";
 import { Badge } from "../components/common/Badge";
+import { ThemeToggle } from "../components/common/ThemeToggle";
 import { AnimatePresence, m } from "framer-motion";
 import { fadeIn } from "../animations/variants";
 
@@ -48,7 +49,7 @@ export const AdminLayout: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen flex bg-slate-100 text-slate-800">
+    <div className="min-h-screen flex bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-250">
       {/* Desktop Sidebar */}
       <aside
         className={`hidden md:flex flex-col bg-slate-950 text-slate-300 border-r border-slate-900 transition-all duration-300 relative z-30 ${
@@ -74,7 +75,7 @@ export const AdminLayout: React.FC = () => {
         </div>
 
         {/* Menu Items */}
-        <nav className="flex-1 px-3 py-4 flex flex-col gap-1">
+        <nav className="flex-1 px-3 py-4 flex flex-col gap-1 overflow-y-auto">
           {menuItems.map((item) => {
             const active = location.pathname.startsWith(item.path);
             const Icon = item.icon;
@@ -84,11 +85,11 @@ export const AdminLayout: React.FC = () => {
                 to={item.path}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all group ${
                   active
-                    ? "bg-red-650/10 text-red-400 border border-red-500/20"
+                    ? "bg-red-500/15 text-red-400 border border-red-500/30"
                     : "hover:bg-slate-900 text-slate-400 hover:text-white"
                 }`}
               >
-                <Icon className={`h-4.5 w-4.5 shrink-0 ${active ? "text-red-450" : "text-slate-400 group-hover:text-slate-200"}`} />
+                <Icon className={`h-4.5 w-4.5 shrink-0 ${active ? "text-red-400" : "text-slate-400 group-hover:text-slate-200"}`} />
                 {sidebarExpanded && <span className="truncate">{item.label}</span>}
               </Link>
             );
@@ -99,7 +100,7 @@ export const AdminLayout: React.FC = () => {
         <div className={`p-4 border-t border-slate-900 ${sidebarExpanded ? "px-5" : "px-3"}`}>
           <Button
             variant="ghost"
-            className="w-full text-slate-450 hover:text-white hover:bg-slate-900 justify-start px-2 py-2.5"
+            className="w-full text-slate-400 hover:text-white hover:bg-slate-900 justify-start px-2 py-2.5"
             onClick={logout}
             leftIcon={<LogOut className="h-4.5 w-4.5" />}
           >
@@ -110,7 +111,7 @@ export const AdminLayout: React.FC = () => {
         {/* Sidebar Toggle */}
         <button
           onClick={() => setSidebarExpanded(!sidebarExpanded)}
-          className="absolute bottom-16 -right-3 h-6 w-6 rounded-full bg-slate-950 border border-slate-800 text-slate-400 flex items-center justify-center z-40 shadow-md"
+          className="absolute bottom-16 -right-3 h-6 w-6 rounded-full bg-slate-950 border border-slate-800 text-slate-400 flex items-center justify-center z-40 shadow-md hover:text-white"
         >
           {sidebarExpanded ? <ChevronLeft className="h-3.5 w-3.5" /> : <ChevronRight className="h-3.5 w-3.5" />}
         </button>
@@ -135,8 +136,8 @@ export const AdminLayout: React.FC = () => {
                   to={item.path}
                   className={`flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-semibold tracking-wide transition-all ${
                     active
-                      ? "bg-slate-100 text-slate-950"
-                      : "text-slate-500 hover:bg-slate-50 hover:text-slate-950"
+                      ? "bg-slate-100 dark:bg-slate-800 text-slate-950 dark:text-white"
+                      : "text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-850 hover:text-slate-950 dark:hover:text-white"
                   }`}
                 >
                   <Icon className="h-5 w-5 shrink-0" />
@@ -159,28 +160,29 @@ export const AdminLayout: React.FC = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
         {/* Admin Header */}
-        <header className="h-16 border-b border-slate-200 bg-white px-6 flex items-center justify-between shrink-0">
+        <header className="h-16 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-6 flex items-center justify-between shrink-0 transition-colors duration-250">
           <div className="flex items-center gap-4">
             <button
               onClick={() => setMobileSidebarOpen(true)}
-              className="p-1 md:hidden text-slate-650 hover:bg-slate-100 rounded-lg"
+              className="p-1 md:hidden text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"
             >
               <Menu className="h-6 w-6" />
             </button>
-            <h1 className="text-sm font-bold text-slate-900 tracking-tight">
+            <h1 className="text-sm font-bold text-slate-900 dark:text-slate-100 tracking-tight">
               Administrative Console (Role: Systems Administrator)
             </h1>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-full bg-slate-950 text-white flex items-center justify-center font-bold text-xs">
+            <ThemeToggle />
+            <div className="h-9 w-9 rounded-full bg-slate-950 dark:bg-slate-800 text-white border border-slate-700 flex items-center justify-center font-bold text-xs shadow-md">
               AD
             </div>
           </div>
         </header>
 
         {/* Scrollable Main Panels */}
-        <main className="flex-1 overflow-y-auto p-6 md:p-8 bg-slate-100/50">
+        <main className="flex-1 overflow-y-auto p-6 md:p-8 bg-slate-50 dark:bg-slate-950 transition-colors duration-250">
           <AnimatePresence mode="wait">
             <m.div
               key={location.pathname}

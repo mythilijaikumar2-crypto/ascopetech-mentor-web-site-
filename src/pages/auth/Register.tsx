@@ -33,10 +33,10 @@ export const Register: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 text-slate-900 dark:text-slate-100">
       <div className="flex flex-col gap-1 text-center sm:text-left">
-        <h1 className="text-xl font-bold text-slate-900 tracking-tight">Create your Account</h1>
-        <p className="text-xs text-slate-500">Sign up in seconds to start building CVs and practicing mock interviews.</p>
+        <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Create your Account</h1>
+        <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Sign up in seconds to start building CVs and practicing mock interviews.</p>
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -58,13 +58,13 @@ export const Register: React.FC = () => {
           required
         />
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="password" className="text-xs font-semibold text-slate-700">Password</label>
+          <label htmlFor="password" className="text-xs font-bold text-slate-800 dark:text-slate-200">Password</label>
           <input
             id="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-2.5 bg-white text-slate-900 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
+            className="w-full px-4 py-2.5 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-800 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 shadow-xs"
             placeholder="••••••••"
             required
           />
@@ -74,15 +74,15 @@ export const Register: React.FC = () => {
           type="submit"
           variant="primary"
           isLoading={loading}
-          className="w-full mt-2"
+          className="w-full mt-2 py-3"
         >
           Create Account
         </Button>
       </form>
 
-      <p className="text-center text-xs text-slate-500">
+      <p className="text-center text-xs text-slate-500 dark:text-slate-400 font-medium">
         Already have an account?{" "}
-        <Link to="/login" className="font-semibold text-primary-600 hover:text-primary-700">
+        <Link to="/login" className="font-extrabold text-blue-600 dark:text-blue-400 hover:underline">
           Sign in here
         </Link>
       </p>

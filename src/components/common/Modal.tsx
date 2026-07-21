@@ -61,7 +61,7 @@ export const Modal: React.FC<ModalProps> = ({
             animate="visible"
             exit="exit"
             onClick={onClose}
-            className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm"
+            className="fixed inset-0 bg-slate-950/70 backdrop-blur-md"
           />
 
           {/* Modal Container */}
@@ -74,15 +74,15 @@ export const Modal: React.FC<ModalProps> = ({
             role="dialog"
             aria-modal="true"
             className={clsx(
-              "relative w-full bg-white rounded-2xl shadow-xl border border-slate-100 flex flex-col z-10 max-h-[90vh] overflow-hidden",
+              "relative w-full bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col z-10 max-h-[90vh] overflow-hidden text-slate-900 dark:text-slate-100",
               sizes[size]
             )}
           >
             {/* Header */}
             {(title || showCloseButton) && (
-              <div className="flex items-center justify-between px-6 py-4.5 border-b border-slate-100 bg-slate-50/50">
+              <div className="flex items-center justify-between px-6 py-4.5 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/50">
                 {title ? (
-                  <h3 className="text-base font-semibold text-slate-800 tracking-tight text-balance">
+                  <h3 className="text-base font-extrabold text-slate-900 dark:text-slate-100 tracking-tight text-balance">
                     {title}
                   </h3>
                 ) : (
@@ -92,7 +92,7 @@ export const Modal: React.FC<ModalProps> = ({
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100"
+                    className="p-1 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
                     onClick={onClose}
                     aria-label="Close modal"
                   >
@@ -103,7 +103,7 @@ export const Modal: React.FC<ModalProps> = ({
             )}
 
             {/* Scrollable Content */}
-            <div className="flex-1 px-6 py-5 overflow-y-auto text-sm text-slate-600">
+            <div className="flex-1 px-6 py-5 overflow-y-auto text-sm text-slate-700 dark:text-slate-300">
               {children}
             </div>
           </m.div>

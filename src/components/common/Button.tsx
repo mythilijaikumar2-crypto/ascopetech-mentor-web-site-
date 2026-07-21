@@ -5,7 +5,7 @@ import { twMerge } from "tailwind-merge";
 
 export interface ButtonProps extends Omit<HTMLMotionProps<"button">, "children"> {
   children?: React.ReactNode;
-  variant?: "primary" | "secondary" | "outline" | "text" | "danger" | "ghost";
+  variant?: "primary" | "secondary" | "outline" | "text" | "danger" | "ghost" | "success" | "gradient" | "glass";
   size?: "sm" | "md" | "lg";
   isLoading?: boolean;
   leftIcon?: React.ReactNode;
@@ -29,21 +29,27 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      "relative inline-flex items-center justify-center font-extrabold tracking-normal rounded-xl transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none active:scale-[0.97] cursor-pointer overflow-hidden group select-none";
+      "relative inline-flex items-center justify-center font-extrabold tracking-normal rounded-xl transition-all duration-250 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none active:scale-[0.97] cursor-pointer overflow-hidden group select-none";
 
     const variants = {
       primary:
-        "bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/30 hover:shadow-indigo-500/50 border border-indigo-400/40 ring-1 ring-white/20 active:bg-indigo-700",
+        "bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-400 text-white shadow-md shadow-blue-500/25 border border-blue-400/30 active:bg-blue-800",
       secondary:
-        "bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-900/20 border border-slate-700/80 active:bg-slate-950",
+        "bg-cyan-500 hover:bg-cyan-600 dark:bg-cyan-400 dark:hover:bg-cyan-300 text-slate-950 shadow-md shadow-cyan-500/20 border border-cyan-300/40 active:bg-cyan-700 font-extrabold",
       outline:
-        "bg-white hover:bg-slate-50 text-slate-900 border-2 border-slate-200/90 hover:border-indigo-600 shadow-xs active:bg-slate-100",
+        "bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-800 hover:border-blue-500 dark:hover:border-blue-400 hover:bg-slate-50 dark:hover:bg-slate-800/80 shadow-xs",
       text:
-        "bg-transparent hover:bg-indigo-50/80 text-indigo-600 hover:text-indigo-700 active:bg-indigo-100/80",
+        "bg-transparent hover:bg-blue-50/80 dark:hover:bg-blue-950/50 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300",
       danger:
-        "bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-600/30 hover:shadow-red-500/50 border border-red-400/40 active:bg-red-700",
+        "bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-400 text-white shadow-md shadow-red-500/25 border border-red-400/30 active:bg-red-800",
+      success:
+        "bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-400 text-white shadow-md shadow-emerald-500/25 border border-emerald-400/30 active:bg-emerald-800",
       ghost:
-        "bg-indigo-50/60 hover:bg-indigo-100/90 text-indigo-700 hover:text-indigo-800 border border-indigo-100 active:bg-indigo-200/70",
+        "bg-slate-100/80 dark:bg-slate-800/60 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200/50 dark:border-slate-700/50",
+      gradient:
+        "bg-gradient-to-r from-blue-600 via-cyan-500 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white shadow-lg shadow-blue-500/30 border border-white/20",
+      glass:
+        "bg-white/70 dark:bg-slate-900/70 backdrop-blur-md text-slate-900 dark:text-white border border-white/40 dark:border-slate-800 hover:bg-white/90 dark:hover:bg-slate-900/90 shadow-md",
     };
 
     const sizes = {
@@ -57,9 +63,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         type={type}
         disabled={disabled || isLoading}
-        whileHover={{ y: -2, scale: 1.025 }}
-        whileTap={{ scale: 0.96 }}
-        transition={{ type: "spring", stiffness: 450, damping: 25 }}
+        whileHover={{ y: -2, scale: 1.02 }}
+        whileTap={{ scale: 0.97 }}
+        transition={{ duration: 0.25, ease: "easeOut" }}
         className={twMerge(
           clsx(
             baseStyles,
@@ -77,9 +83,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             <svg
               className={clsx(
                 "animate-spin h-5 w-5",
-                variant === "primary" || variant === "danger" || variant === "secondary"
+                variant === "primary" || variant === "danger" || variant === "success" || variant === "gradient"
                   ? "text-white"
-                  : "text-indigo-600"
+                  : "text-blue-500"
               )}
               fill="none"
               viewBox="0 0 24 24"
