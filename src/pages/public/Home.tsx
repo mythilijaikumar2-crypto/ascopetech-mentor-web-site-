@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { IntroductionAnimation } from "../../components/animations/IntroductionAnimation";
+import heroVideo from "../../assets/hero_1ascopetech.mp4";
 import { useAuthStore } from "../../store/authStore";
 import { Button } from "../../components/common/Button";
 import { Card } from "../../components/common/Card";
@@ -177,7 +178,21 @@ export const Home: React.FC = () => {
   return (
     <div className="w-full relative overflow-x-hidden">
       {/* 1. Hero Section */}
-      <section className="relative pt-12 pb-24 md:pt-20 md:pb-32 bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 overflow-hidden transition-colors duration-200">
+      <section className="relative pt-12 pb-24 md:pt-20 md:pb-32 bg-gradient-to-b from-slate-50/80 via-white/90 to-slate-50/80 dark:from-slate-950/90 dark:via-slate-900/90 dark:to-slate-950/90 overflow-hidden transition-colors duration-200">
+        {/* Background Video */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none -z-20 opacity-25 dark:opacity-20 transition-opacity duration-300"
+        >
+          <source src={heroVideo} type="video/mp4" />
+        </video>
+
+        {/* Soft Backdrop Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/80 to-white/70 dark:from-slate-950/90 dark:via-slate-950/80 dark:to-slate-950/70 pointer-events-none -z-10" />
+
         {/* Decorative background vectors */}
         <div className="absolute top-0 right-0 h-[500px] w-[500px] rounded-full bg-primary-300/20 dark:bg-primary-900/20 blur-[120px] pointer-events-none -z-10" />
         <div className="absolute bottom-0 left-0 h-[400px] w-[400px] rounded-full bg-brand-300/20 dark:bg-brand-900/20 blur-[100px] pointer-events-none -z-10" />
