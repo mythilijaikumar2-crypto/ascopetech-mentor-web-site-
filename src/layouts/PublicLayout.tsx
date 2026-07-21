@@ -56,7 +56,9 @@ export const PublicLayout: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2.5 group">
-            <img src={logoImage} alt="Ascope Tech" className="h-14 w-auto object-contain group-hover:scale-105 transition-all duration-300" />
+            <div className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 px-3 py-1.5 rounded-2xl shadow-xs group-hover:shadow-md transition-all duration-300 flex items-center justify-center">
+              <img src={logoImage} alt="Ascope Tech" className="h-10 md:h-12 w-auto object-contain group-hover:scale-105 transition-all duration-300" />
+            </div>
           </Link>
 
           {/* Desktop Nav Items */}

@@ -12,8 +12,10 @@ export const AuthLayout: React.FC = () => {
         <div className="absolute bottom-0 left-0 h-[300px] w-[300px] rounded-full bg-brand-500/10 blur-[100px] pointer-events-none" />
 
         {/* Brand logo link */}
-        <Link to="/" className="flex items-center gap-2.5 z-10">
-          <img src={logoImage} alt="Ascope Tech" className="h-12 w-auto object-contain" />
+        <Link to="/" className="flex items-center gap-2.5 z-10 max-w-fit">
+          <div className="bg-white px-3 py-1.5 rounded-xl border border-slate-700/80 shadow-sm flex items-center justify-center">
+            <img src={logoImage} alt="Ascope Tech" className="h-10 md:h-11 w-auto object-contain" />
+          </div>
         </Link>
 
         {/* Center message visual */}
@@ -55,7 +57,9 @@ export const AuthLayout: React.FC = () => {
           {/* Logo showing only on mobile screens */}
           <div className="flex lg:hidden justify-center mb-8">
             <Link to="/">
-              <img src={logoImage} alt="Ascope Tech" className="h-12 w-auto object-contain" />
+              <div className="bg-white px-3 py-1.5 rounded-xl border border-slate-200 shadow-xs flex items-center justify-center">
+                <img src={logoImage} alt="Ascope Tech" className="h-10 w-auto object-contain" />
+              </div>
             </Link>
           </div>
           <Outlet />

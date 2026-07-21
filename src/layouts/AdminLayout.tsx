@@ -58,11 +58,15 @@ export const AdminLayout: React.FC = () => {
         <div className={`p-6 border-b border-slate-900 flex items-center justify-between ${sidebarExpanded ? "px-6" : "px-4 justify-center"}`}>
           {sidebarExpanded ? (
             <Link to="/" className="flex items-center gap-2.5">
-              <img src={logoImage} alt="Ascope Tech" className="h-10 w-auto object-contain" />
+              <div className="bg-white px-2.5 py-1.5 rounded-xl border border-slate-800 shadow-xs flex items-center justify-center">
+                <img src={logoImage} alt="Ascope Tech" className="h-8 md:h-9 w-auto object-contain" />
+              </div>
             </Link>
           ) : (
             <Link to="/">
-              <img src={logoImage} alt="Ascope Tech" className="h-7 w-7 object-contain" />
+              <div className="bg-white p-1 rounded-lg border border-slate-800 flex items-center justify-center">
+                <img src={logoImage} alt="Ascope Tech" className="h-6 w-6 object-contain" />
+              </div>
             </Link>
           )}
 
