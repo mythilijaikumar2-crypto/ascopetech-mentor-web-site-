@@ -9,65 +9,76 @@ import { AuthLayout } from "../layouts/AuthLayout";
 import { CandidateLayout } from "../layouts/CandidateLayout";
 import { AdminLayout } from "../layouts/AdminLayout";
 
+// Universal Lazy Loader Helper supporting both Default & Named Exports
+const lazyLoad = (factory: () => Promise<any>, exportName?: string) =>
+  React.lazy(() =>
+    factory().then((module) => {
+      const component = exportName
+        ? module[exportName]
+        : module.default || module[Object.keys(module)[0]];
+      return { default: component };
+    })
+  );
+
 // Lazy Public Pages
-const Home = React.lazy(() => import("../pages/public/Home"));
-const About = React.lazy(() => import("../pages/public/About"));
-const Features = React.lazy(() => import("../pages/public/Features"));
-const Careers = React.lazy(() => import("../pages/public/Careers"));
-const CareerDetails = React.lazy(() => import("../pages/public/CareerDetails"));
-const Jobs = React.lazy(() => import("../pages/public/Jobs"));
-const JobDetails = React.lazy(() => import("../pages/public/JobDetails"));
-const Contact = React.lazy(() => import("../pages/public/Contact"));
-const Privacy = React.lazy(() => import("../pages/public/Privacy"));
-const Terms = React.lazy(() => import("../pages/public/Terms"));
+const Home = lazyLoad(() => import("../pages/public/Home"), "Home");
+const About = lazyLoad(() => import("../pages/public/About"), "About");
+const Features = lazyLoad(() => import("../pages/public/Features"), "Features");
+const Careers = lazyLoad(() => import("../pages/public/Careers"), "Careers");
+const CareerDetails = lazyLoad(() => import("../pages/public/CareerDetails"), "CareerDetails");
+const Jobs = lazyLoad(() => import("../pages/public/Jobs"), "Jobs");
+const JobDetails = lazyLoad(() => import("../pages/public/JobDetails"), "JobDetails");
+const Contact = lazyLoad(() => import("../pages/public/Contact"), "Contact");
+const Privacy = lazyLoad(() => import("../pages/public/Privacy"), "Privacy");
+const Terms = lazyLoad(() => import("../pages/public/Terms"), "Terms");
 
 // Lazy Auth Pages
-const Login = React.lazy(() => import("../pages/auth/Login"));
-const Register = React.lazy(() => import("../pages/auth/Register"));
-const ForgotPassword = React.lazy(() => import("../pages/auth/ForgotPassword"));
+const Login = lazyLoad(() => import("../pages/auth/Login"), "Login");
+const Register = lazyLoad(() => import("../pages/auth/Register"), "Register");
+const ForgotPassword = lazyLoad(() => import("../pages/auth/ForgotPassword"), "ForgotPassword");
 
 // Lazy Onboarding
-const Onboarding = React.lazy(() => import("../pages/onboarding/Onboarding"));
+const Onboarding = lazyLoad(() => import("../pages/onboarding/Onboarding"), "Onboarding");
 
 // Lazy Candidate Dashboard Pages
-const CandidateDashboard = React.lazy(() => import("../pages/candidate/Dashboard"));
-const CandidateProfile = React.lazy(() => import("../pages/candidate/Profile"));
-const CandidateAssessment = React.lazy(() => import("../pages/candidate/Assessment"));
-const CandidateAssessmentResult = React.lazy(() => import("../pages/candidate/AssessmentResult"));
-const CandidateCareers = React.lazy(() => import("../pages/candidate/Careers"));
-const CandidateResumes = React.lazy(() => import("../pages/candidate/Resumes"));
-const CandidateResumeCreate = React.lazy(() => import("../pages/candidate/ResumeCreate"));
-const CandidateResumeEdit = React.lazy(() => import("../pages/candidate/ResumeEdit"));
-const CandidateResumeAnalyzer = React.lazy(() => import("../pages/candidate/ResumeAnalyzer"));
-const CandidateInterviews = React.lazy(() => import("../pages/candidate/Interviews"));
-const CandidateInterviewSetup = React.lazy(() => import("../pages/candidate/InterviewSetup"));
-const CandidateInterviewSession = React.lazy(() => import("../pages/candidate/InterviewSession"));
-const CandidateInterviewReport = React.lazy(() => import("../pages/candidate/InterviewReport"));
-const CandidateRoadmap = React.lazy(() => import("../pages/candidate/Roadmap"));
-const CandidateSkills = React.lazy(() => import("../pages/candidate/Skills"));
-const CandidateJobs = React.lazy(() => import("../pages/candidate/Jobs"));
-const CandidateSavedJobs = React.lazy(() => import("../pages/candidate/SavedJobs"));
-const CandidateApplications = React.lazy(() => import("../pages/candidate/Applications"));
-const CandidateAssistant = React.lazy(() => import("../pages/candidate/Assistant"));
-const CandidateNotifications = React.lazy(() => import("../pages/candidate/Notifications"));
-const CandidateSettings = React.lazy(() => import("../pages/candidate/Settings"));
+const CandidateDashboard = lazyLoad(() => import("../pages/candidate/Dashboard"), "Dashboard");
+const CandidateProfile = lazyLoad(() => import("../pages/candidate/Profile"), "Profile");
+const CandidateAssessment = lazyLoad(() => import("../pages/candidate/Assessment"), "Assessment");
+const CandidateAssessmentResult = lazyLoad(() => import("../pages/candidate/AssessmentResult"), "AssessmentResult");
+const CandidateCareers = lazyLoad(() => import("../pages/candidate/Careers"), "Careers");
+const CandidateResumes = lazyLoad(() => import("../pages/candidate/Resumes"), "Resumes");
+const CandidateResumeCreate = lazyLoad(() => import("../pages/candidate/ResumeCreate"), "ResumeCreate");
+const CandidateResumeEdit = lazyLoad(() => import("../pages/candidate/ResumeEdit"), "ResumeEdit");
+const CandidateResumeAnalyzer = lazyLoad(() => import("../pages/candidate/ResumeAnalyzer"), "ResumeAnalyzer");
+const CandidateInterviews = lazyLoad(() => import("../pages/candidate/Interviews"), "Interviews");
+const CandidateInterviewSetup = lazyLoad(() => import("../pages/candidate/InterviewSetup"), "InterviewSetup");
+const CandidateInterviewSession = lazyLoad(() => import("../pages/candidate/InterviewSession"), "InterviewSession");
+const CandidateInterviewReport = lazyLoad(() => import("../pages/candidate/InterviewReport"), "InterviewReport");
+const CandidateRoadmap = lazyLoad(() => import("../pages/candidate/Roadmap"), "Roadmap");
+const CandidateSkills = lazyLoad(() => import("../pages/candidate/Skills"), "Skills");
+const CandidateJobs = lazyLoad(() => import("../pages/candidate/Jobs"), "Jobs");
+const CandidateSavedJobs = lazyLoad(() => import("../pages/candidate/SavedJobs"), "SavedJobs");
+const CandidateApplications = lazyLoad(() => import("../pages/candidate/Applications"), "Applications");
+const CandidateAssistant = lazyLoad(() => import("../pages/candidate/Assistant"), "Assistant");
+const CandidateNotifications = lazyLoad(() => import("../pages/candidate/Notifications"), "Notifications");
+const CandidateSettings = lazyLoad(() => import("../pages/candidate/Settings"), "Settings");
 
 // Lazy Admin Dashboard Pages
-const AdminDashboard = React.lazy(() => import("../pages/admin/Dashboard"));
-const AdminUsers = React.lazy(() => import("../pages/admin/Users"));
-const AdminCandidates = React.lazy(() => import("../pages/admin/Candidates"));
-const AdminMentors = React.lazy(() => import("../pages/admin/Mentors"));
-const AdminCareers = React.lazy(() => import("../pages/admin/Careers"));
-const AdminSkills = React.lazy(() => import("../pages/admin/Skills"));
-const AdminAssessments = React.lazy(() => import("../pages/admin/Assessments"));
-const AdminJobs = React.lazy(() => import("../pages/admin/Jobs"));
-const AdminCompanies = React.lazy(() => import("../pages/admin/Companies"));
-const AdminApplications = React.lazy(() => import("../pages/admin/Applications"));
-const AdminContactMessages = React.lazy(() => import("../pages/admin/ContactMessages"));
-const AdminReports = React.lazy(() => import("../pages/admin/Reports"));
-const AdminSettings = React.lazy(() => import("../pages/admin/Settings"));
+const AdminDashboard = lazyLoad(() => import("../pages/admin/Dashboard"), "Dashboard");
+const AdminUsers = lazyLoad(() => import("../pages/admin/Users"), "Users");
+const AdminCandidates = lazyLoad(() => import("../pages/admin/Candidates"), "Candidates");
+const AdminMentors = lazyLoad(() => import("../pages/admin/Mentors"), "Mentors");
+const AdminCareers = lazyLoad(() => import("../pages/admin/Careers"), "Careers");
+const AdminSkills = lazyLoad(() => import("../pages/admin/Skills"), "Skills");
+const AdminAssessments = lazyLoad(() => import("../pages/admin/Assessments"), "Assessments");
+const AdminJobs = lazyLoad(() => import("../pages/admin/Jobs"), "Jobs");
+const AdminCompanies = lazyLoad(() => import("../pages/admin/Companies"), "Companies");
+const AdminApplications = lazyLoad(() => import("../pages/admin/Applications"), "Applications");
+const AdminContactMessages = lazyLoad(() => import("../pages/admin/ContactMessages"), "ContactMessages");
+const AdminReports = lazyLoad(() => import("../pages/admin/Reports"), "Reports");
+const AdminSettings = lazyLoad(() => import("../pages/admin/Settings"), "Settings");
 
-const NotFound = React.lazy(() => import("../pages/errors/NotFound"));
+const NotFound = lazyLoad(() => import("../pages/errors/NotFound"), "NotFound");
 
 // Helper Loading Skeleton Component
 const LoadingSkeleton = () => (
