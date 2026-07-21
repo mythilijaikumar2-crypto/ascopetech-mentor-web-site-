@@ -178,20 +178,17 @@ export const Home: React.FC = () => {
   return (
     <div className="w-full relative overflow-x-hidden">
       {/* 1. Hero Section */}
-      <section className="relative pt-12 pb-24 md:pt-20 md:pb-32 overflow-hidden">
+      <section className="relative pt-12 pb-24 md:pt-20 md:pb-32 overflow-hidden bg-slate-950">
         {/* Full-Visibility Background Video */}
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="absolute inset-0 w-full h-full object-cover pointer-events-none -z-20 opacity-100"
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none -z-20 opacity-80"
         >
           <source src={heroVideo} type="video/mp4" />
         </video>
-
-        {/* Minimal Subtle Vignette Gradient for Readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-slate-950/40 pointer-events-none -z-10" />
 
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Hero left text content */}
@@ -199,18 +196,18 @@ export const Home: React.FC = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="lg:col-span-6 flex flex-col gap-6 p-6 md:p-8 rounded-3xl bg-slate-950/60 backdrop-blur-md border border-white/20 shadow-2xl text-white"
+            className="lg:col-span-6 flex flex-col gap-6 p-6 md:p-8 rounded-3xl bg-slate-950/70 backdrop-blur-md border border-white/20 shadow-2xl text-white"
           >
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary-100/80 dark:bg-primary-950/80 border border-primary-200 dark:border-primary-800 max-w-fit shadow-xs">
-              <Sparkles className="h-4 w-4 text-primary-600 dark:text-primary-400 animate-pulse" />
-              <span className="text-[11px] font-extrabold text-primary-900 dark:text-primary-200 uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary-950/80 border border-primary-700/80 max-w-fit shadow-xs">
+              <Sparkles className="h-4 w-4 text-primary-400 animate-pulse" />
+              <span className="text-[11px] font-extrabold text-primary-200 uppercase tracking-wider">
                 AI Career Guidance & Mentorship
               </span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-white drop-shadow-md tracking-tight leading-tight text-balance">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white drop-shadow-md tracking-tight leading-tight text-balance">
               Build the Right Career with{" "}
-              <span className="bg-gradient-to-r from-primary-400 via-indigo-400 to-brand-400 bg-clip-text text-transparent drop-shadow-xs">
+              <span className="bg-gradient-to-r from-primary-400 via-indigo-300 to-brand-400 bg-clip-text text-transparent drop-shadow-xs">
                 AI-Powered Guidance
               </span>
             </h1>
@@ -221,139 +218,84 @@ export const Home: React.FC = () => {
 
             <div className="flex flex-wrap items-center gap-4.5 mt-2">
               <Link to="/onboarding">
-                <Button variant="primary" size="lg" className="shadow-lg shadow-primary-500/20 text-sm font-bold px-6" rightIcon={<ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1.5" />}>
+                <Button variant="primary" size="lg" className="shadow-lg shadow-primary-500/30 text-sm font-bold px-6" rightIcon={<ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1.5" />}>
                   Get Started Free
                 </Button>
               </Link>
               <Link to="/features">
-                <Button variant="outline" size="lg" className="text-sm font-bold px-6 dark:border-slate-700 dark:text-slate-200" rightIcon={<ArrowRight className="h-4.5 w-4.5 transition-transform duration-300 group-hover:translate-x-1" />}>
+                <Button variant="outline" size="lg" className="text-sm font-bold px-6 border-slate-700 text-slate-200 hover:bg-slate-800" rightIcon={<ArrowRight className="h-4.5 w-4.5 transition-transform duration-300 group-hover:translate-x-1" />}>
                   Explore Features
                 </Button>
               </Link>
             </div>
 
             {/* Small Trust indicators */}
-            <div className="flex items-center gap-6 mt-6 pt-6 border-t border-slate-200/80 dark:border-slate-800">
+            <div className="flex items-center gap-6 mt-6 pt-6 border-t border-slate-800">
               <div className="flex -space-x-2">
                 {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="h-9 w-9 rounded-full border-2 border-white dark:border-slate-900 flex items-center justify-center font-bold text-xs text-white bg-indigo-600 shadow-sm">
+                  <div key={i} className="h-9 w-9 rounded-full border-2 border-slate-900 flex items-center justify-center font-bold text-xs text-white bg-indigo-600 shadow-sm">
                     {String.fromCharCode(64 + i)}
                   </div>
                 ))}
               </div>
               <div>
-                <p className="text-sm font-extrabold text-slate-900 dark:text-slate-100">Trusted by 10,000+ candidates</p>
-                <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">Accelerating career transitions daily</p>
+                <p className="text-sm font-extrabold text-white">Trusted by 10,000+ candidates</p>
+                <p className="text-xs text-slate-300 font-medium">Accelerating career transitions daily</p>
               </div>
             </div>
           </m.div>
 
-          {/* Hero right visual dashboard preview with interactive 3D tilts and floating layers */}
-          <div
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-            className="lg:col-span-6 relative cursor-pointer select-none"
-            style={{ perspective: 1200 }}
+          {/* Hero right: Featured HD Video Player Showcase Card */}
+          <m.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="lg:col-span-6 relative group"
           >
-            {/* Interactive tilted dashboard container mockup */}
-            <m.div
-              style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-              className="w-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-3xl shadow-2xl border border-slate-200/80 dark:border-slate-800 overflow-hidden relative transition-shadow duration-300 hover:shadow-primary-500/10"
-            >
-              {/* Toolbar */}
-              <div className="px-5 py-3 border-b border-slate-200/80 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/50 flex items-center justify-between">
-                <div className="flex items-center gap-1.5">
-                  <div className="h-3 w-3 rounded-full bg-red-400" />
-                  <div className="h-3 w-3 rounded-full bg-amber-400" />
-                  <div className="h-3 w-3 rounded-full bg-emerald-400" />
+            <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-primary-500 to-brand-500 opacity-40 blur-lg group-hover:opacity-75 transition duration-500" />
+            <div className="relative rounded-3xl bg-slate-900 border border-slate-800 overflow-hidden shadow-2xl">
+              {/* Header bar */}
+              <div className="px-5 py-3.5 bg-slate-950 border-b border-slate-800 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="h-3 w-3 rounded-full bg-red-500" />
+                  <div className="h-3 w-3 rounded-full bg-amber-500" />
+                  <div className="h-3 w-3 rounded-full bg-emerald-500" />
                 </div>
-                <div className="h-4.5 w-32 bg-slate-200 dark:bg-slate-800 rounded-full" />
-                <div className="h-4.5 w-4.5 bg-slate-200 dark:bg-slate-800 rounded-full" />
+                <span className="text-[11px] font-bold text-slate-300 tracking-wider uppercase flex items-center gap-1.5">
+                  <Sparkles className="h-3.5 w-3.5 text-primary-400" /> Ascope Tech Platform Tour
+                </span>
+                <Badge variant="primary" className="text-[9px]">HD VIDEO</Badge>
               </div>
-              {/* Dashboard Content */}
-              <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4" style={{ transformStyle: "preserve-3d" }}>
-                <div className="flex flex-col gap-4" style={{ transformStyle: "preserve-3d" }}>
-                  {/* Career widget with depth translation */}
-                  <m.div 
-                    style={{ transform: "translateZ(40px)", transformStyle: "preserve-3d" }}
-                    className="p-4 bg-slate-50 dark:bg-slate-950/60 rounded-2xl border border-slate-200/80 dark:border-slate-800 flex items-center gap-3 shadow-xs hover:bg-white dark:hover:bg-slate-900 hover:shadow-md transition-all duration-300"
-                  >
-                    <div className="h-10 w-10 rounded-xl bg-primary-100 dark:bg-primary-950/60 text-primary-600 dark:text-primary-400 flex items-center justify-center">
-                      <Target className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500">SELECTED GOAL</p>
-                      <p className="text-xs font-extrabold text-slate-900 dark:text-slate-100">Frontend Engineer</p>
-                    </div>
-                  </m.div>
-                  {/* ATS widget with depth translation */}
-                  <m.div 
-                    style={{ transform: "translateZ(60px)", transformStyle: "preserve-3d" }}
-                    className="p-4 bg-slate-50 dark:bg-slate-950/60 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs hover:bg-white dark:hover:bg-slate-900 hover:shadow-md transition-all duration-300"
-                  >
-                    <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500">RESUME ATS SCORE</p>
-                    <div className="flex items-center justify-between mt-1">
-                      <span className="text-xl font-extrabold text-slate-900 dark:text-slate-100">82/100</span>
-                      <Badge variant="success" className="text-[8px] font-extrabold">PASS</Badge>
-                    </div>
-                  </m.div>
-                </div>
-                {/* Visual readiness score ring with depth translation */}
-                <m.div 
-                  style={{ transform: "translateZ(80px)", transformStyle: "preserve-3d" }}
-                  className="p-5 bg-gradient-to-br from-primary-600 to-brand-500 rounded-2xl text-white flex flex-col justify-between shadow-lg shadow-primary-500/10 hover:shadow-primary-500/20 transition-all duration-300"
+
+              {/* Main Video Player Container */}
+              <div className="relative aspect-video bg-black overflow-hidden flex items-center justify-center">
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  controls
+                  playsInline
+                  className="w-full h-full object-cover"
                 >
-                  <div className="flex justify-between items-start">
-                    <span className="text-[10px] font-bold tracking-wider uppercase opacity-90">READINESS</span>
-                    <TrendingUp className="h-4.5 w-4.5" />
+                  <source src={heroVideo} type="video/mp4" />
+                </video>
+              </div>
+
+              {/* Video Footer info */}
+              <div className="p-4 bg-slate-950/90 border-t border-slate-800/80 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="h-8 w-8 rounded-xl bg-primary-950 text-primary-400 flex items-center justify-center font-bold text-xs">
+                    AI
                   </div>
                   <div>
-                    <h3 className="text-3xl font-extrabold tracking-tight">78%</h3>
-                    <p className="text-[10px] opacity-90 mt-1 font-semibold leading-relaxed">Ready for mid-level application</p>
+                    <h4 className="text-xs font-bold text-white tracking-tight">AI Mentor & Guidance Platform</h4>
+                    <p className="text-[10px] text-slate-400">Watch full walkthrough video</p>
                   </div>
-                </m.div>
+                </div>
+                <Badge variant="success" className="text-[9px]">LIVE PREVIEW</Badge>
               </div>
-            </m.div>
-
-            {/* Floating small indicators animated independently in 3D parallax depth */}
-            <m.div
-              animate={{ y: [0, -8, 0] }}
-              transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
-              className="absolute -top-4 -left-4 p-3 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 flex items-center gap-2.5 z-10"
-              style={{ transform: "translateZ(100px)" }}
-            >
-              <div className="h-6 w-6 rounded-md bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-                <CheckCircle2 className="h-4 w-4" />
-              </div>
-              <span className="text-[10px] font-bold text-slate-800 dark:text-slate-200">Interview Passed!</span>
-            </m.div>
-
-            <m.div
-              animate={{ y: [0, 8, 0] }}
-              transition={{ repeat: Infinity, duration: 5, delay: 2, ease: "easeInOut" }}
-              className="absolute -bottom-4 -right-4 p-3 bg-slate-900 text-white rounded-xl shadow-lg flex items-center gap-2.5 z-10"
-              style={{ transform: "translateZ(110px)" }}
-            >
-              <div className="h-6 w-6 rounded-md bg-slate-800 flex items-center justify-center text-primary-400">
-                <Bot className="h-4 w-4 animate-bounce" />
-              </div>
-              <span className="text-[10px] font-bold tracking-wide">AI analysis ready</span>
-            </m.div>
-
-            {/* Glowing background shapes that follow perspective */}
-            <m.div
-              animate={{ rotate: 360 }}
-              transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
-              className="absolute -top-12 -right-12 h-24 w-24 rounded-full bg-gradient-to-tr from-primary-400/20 to-brand-500/20 blur-xl -z-10"
-              style={{ transform: "translateZ(-30px)" }}
-            />
-            <m.div
-              animate={{ scale: [0.95, 1.05, 0.95] }}
-              transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
-              className="absolute -bottom-16 -left-16 h-36 w-36 rounded-full bg-gradient-to-tr from-brand-400/10 to-indigo-500/15 blur-2xl -z-10"
-              style={{ transform: "translateZ(-50px)" }}
-            />
-          </div>
+            </div>
+          </m.div>
         </div>
       </section>
 
