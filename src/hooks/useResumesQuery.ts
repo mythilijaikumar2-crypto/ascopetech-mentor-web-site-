@@ -3,7 +3,7 @@ import { resumeService } from "../services/resumeService";
 import { useResumeStore, AnalysisResult } from "../store/resumeStore";
 
 export function useResumesQuery() {
-  const { resumes, activeResumeId, addResume, updateResume, deleteResume, setActiveResume } = useResumeStore();
+  const { resumes, selectedResumeId, addResume, updateResume, deleteResume, selectResume } = useResumeStore();
 
   const analyzeMutation = useMutation<AnalysisResult, Error, { fileName: string; fileSize: number }>({
     mutationFn: ({ fileName, fileSize }) => resumeService.analyzeResume(fileName, fileSize),
@@ -20,11 +20,11 @@ export function useResumesQuery() {
 
   return {
     resumes,
-    activeResumeId,
+    selectedResumeId,
     addResume,
     updateResume,
     deleteResume,
-    setActiveResume,
+    selectResume,
     analyzeResume: analyzeMutation.mutateAsync,
     isAnalyzing: analyzeMutation.isPending,
     compareWithJobDescription: compareMutation.mutateAsync,

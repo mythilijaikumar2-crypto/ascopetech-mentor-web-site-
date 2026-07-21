@@ -4,7 +4,7 @@ import { useInterviewStore } from "../store/interviewStore";
 import { InterviewQuestion } from "../data/interviewQuestions";
 
 export function useInterviews() {
-  const { currentSession, pastSessions, startSession, addAnswer, completeSession, resetSession } = useInterviewStore();
+  const { activeSession, sessions, startSession, submitAnswer, completeSession, resetActiveSession } = useInterviewStore();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,7 +26,7 @@ export function useInterviews() {
       setLoading(true);
       setError(null);
       const res = await interviewService.evaluateAnswer(question, answer);
-      addAnswer(question.id, answer, res.score, res.feedback);
+      submitAnswer(question.id, answer);
       return res;
     } catch (err: any) {
       setError(err?.message || "Failed to evaluate response.");
@@ -34,14 +34,14 @@ export function useInterviews() {
     } finally {
       setLoading(false);
     }
-  }, [addAnswer]);
+  }, [submitAnswer]);
 
   const generateReport = useCallback(async () => {
-    if (!currentSession) return;
+    if (!activeSession) return;
     try {
       setLoading(true);
       setError(null);
-      const report = await interviewService.generateFinalReport(currentSession.questions);
+      const report = await interviewService.generateFinalReport(activeSession.questions);
       completeSession(report);
       return report;
     } catch (err: any) {
@@ -50,17 +50,17 @@ export function useInterviews() {
     } finally {
       setLoading(false);
     }
-  }, [currentSession, completeSession]);
+  }, [activeSession, completeSession]);
 
   return {
-    currentSession,
-    pastSessions,
+    activeSession,
+    sessions,
     loading,
     error,
     startSession,
     fetchQuestions,
     evaluateAnswer,
     generateReport,
-    resetSession
+    resetActiveSession
   };
 }

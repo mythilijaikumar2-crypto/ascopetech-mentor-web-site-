@@ -4,7 +4,7 @@ import { useInterviewStore } from "../store/interviewStore";
 import { InterviewQuestion } from "../data/interviewQuestions";
 
 export function useInterviewsQuery(roleId?: string) {
-  const { currentSession, pastSessions, startSession, addAnswer, completeSession, resetSession } = useInterviewStore();
+  const { activeSession, sessions, startSession, submitAnswer, completeSession, resetActiveSession } = useInterviewStore();
 
   const questionsQuery = useQuery<InterviewQuestion[]>({
     queryKey: ["interview_questions", roleId],
@@ -19,14 +19,14 @@ export function useInterviewsQuery(roleId?: string) {
   >({
     mutationFn: ({ question, answer }) => interviewService.evaluateAnswer(question, answer),
     onSuccess: (res, variables) => {
-      addAnswer(variables.question.id, variables.answer, res.score, res.feedback);
+      submitAnswer(variables.question.id, variables.answer);
     },
   });
 
   const reportMutation = useMutation({
     mutationFn: async () => {
-      if (!currentSession) throw new Error("No active session");
-      return await interviewService.generateFinalReport(currentSession.questions);
+      if (!activeSession) throw new Error("No active session");
+      return await interviewService.generateFinalReport(activeSession.questions);
     },
     onSuccess: (report) => {
       completeSession(report);
@@ -36,13 +36,13 @@ export function useInterviewsQuery(roleId?: string) {
   return {
     questions: questionsQuery.data || [],
     isLoadingQuestions: questionsQuery.isLoading,
-    currentSession,
-    pastSessions,
+    activeSession,
+    sessions,
     startSession,
     evaluateAnswer: evaluateMutation.mutateAsync,
     isEvaluating: evaluateMutation.isPending,
     generateReport: reportMutation.mutateAsync,
     isGeneratingReport: reportMutation.isPending,
-    resetSession,
+    resetActiveSession,
   };
 }

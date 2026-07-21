@@ -1,10 +1,10 @@
-import React, { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import React, { createContext, useContext, ReactNode } from "react";
 import { useAuthStore, User } from "../store/authStore";
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
-  login: (token: string, user: User) => void;
+  login: (email: string, role: "candidate" | "admin", name?: string) => void;
   logout: () => void;
 }
 

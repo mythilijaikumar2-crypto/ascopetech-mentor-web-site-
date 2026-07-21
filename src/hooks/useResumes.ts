@@ -3,7 +3,7 @@ import { resumeService } from "../services/resumeService";
 import { useResumeStore, AnalysisResult } from "../store/resumeStore";
 
 export function useResumes() {
-  const { resumes, activeResumeId, addResume, updateResume, deleteResume, setActiveResume } = useResumeStore();
+  const { resumes, selectedResumeId, addResume, updateResume, deleteResume, selectResume } = useResumeStore();
   const [analyzing, setAnalyzing] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -38,13 +38,13 @@ export function useResumes() {
 
   return {
     resumes,
-    activeResumeId,
+    selectedResumeId,
     analyzing,
     error,
     addResume,
     updateResume,
     deleteResume,
-    setActiveResume,
+    selectResume,
     analyzeResume,
     compareWithJobDescription
   };
